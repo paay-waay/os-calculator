@@ -18,102 +18,512 @@
   <link rel="apple-touch-icon" sizes="152x152" href="./assets/icons/apple-touch-icon-152x152.png" />
   <link rel="apple-touch-icon" sizes="120x120" href="./assets/icons/apple-touch-icon-120x120.png" />
   <style>
-    :root{--ink:#19212a;--muted:#657181;--line:#e7ebf0;--soft:#f7f5f0;--card:#fff;--brand:#1f3a4a;--brand2:#c7a86b;--accent:#eef6f3;--warning:#fff4df;--danger:#fae8e8;--shadow:0 18px 45px rgba(21,33,45,.08);--radius:18px}*{box-sizing:border-box}body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:linear-gradient(180deg,#faf8f3 0%,#f4f6f8 100%);color:var(--ink)}.wrap{max-width:1180px;margin:0 auto;padding:32px 18px 56px}header{display:flex;justify-content:space-between;align-items:flex-start;gap:24px;margin-bottom:24px}.brand-kicker{letter-spacing:.16em;text-transform:uppercase;color:var(--brand2);font-weight:700;font-size:12px;margin-bottom:10px}h1{margin:0 0 8px;font-size:clamp(28px,4vw,44px);line-height:1.05;color:var(--brand)}.subtitle{color:var(--muted);max-width:680px;font-size:16px;line-height:1.55;margin:0}.pill{border:1px solid rgba(31,58,74,.15);background:rgba(255,255,255,.66);color:var(--brand);border-radius:999px;padding:10px 14px;font-weight:700;white-space:nowrap;font-size:13px}.grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(320px,.78fr);gap:22px;align-items:start}@media(max-width:920px){header{display:block}.pill{display:inline-block;margin-top:16px}.grid{grid-template-columns:1fr}.summary{position:static!important}}.card{background:var(--card);border:1px solid rgba(25,33,42,.08);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}.card-section{padding:22px;border-bottom:1px solid var(--line)}.card-section:last-child{border-bottom:0}.step-label{display:flex;align-items:center;gap:10px;color:var(--brand);font-weight:800;margin:0 0 14px;font-size:15px}.step-num{width:28px;height:28px;border-radius:50%;background:var(--brand);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:13px}.service-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}@media(max-width:620px){.service-grid{grid-template-columns:1fr}}.service-card{border:1px solid var(--line);border-radius:14px;padding:16px;cursor:pointer;transition:.18s ease;background:#fff}.service-card:hover{transform:translateY(-1px);border-color:rgba(199,168,107,.7)}.service-card.active{border-color:var(--brand2);box-shadow:inset 0 0 0 1px var(--brand2);background:#fffaf0}.service-title{font-weight:900;color:var(--brand);margin-bottom:6px}.service-copy{color:var(--muted);font-size:13px;line-height:1.45;margin:0}.section-title{font-size:17px;font-weight:900;margin:4px 0 14px;color:var(--ink)}.basement-controls{display:grid;grid-template-columns:minmax(240px,360px);gap:12px;margin-top:16px;padding:16px;background:var(--soft);border-radius:14px;border:1px solid var(--line)}.project-context-controls{grid-template-columns:minmax(220px,1fr) minmax(220px,1fr)}@media(max-width:620px){.project-context-controls{grid-template-columns:1fr}}label{display:block;font-size:12px;font-weight:800;color:var(--brand);margin-bottom:6px}select{width:100%;border:1px solid var(--line);border-radius:12px;padding:11px 12px;background:#fff;color:var(--ink);font-weight:700;outline:none}.room-list{display:grid;gap:10px}.room-row{display:grid;grid-template-columns:minmax(0,1fr) 128px;gap:14px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}.room-row:last-child{border-bottom:0}.room-row.selected{background:#fffaf0;border:1px solid rgba(199,168,107,.55);border-radius:14px;padding:12px 14px;box-shadow:0 8px 22px rgba(199,168,107,.12)}.room-row.selected .room-name{color:var(--brand)}.room-name{font-weight:750}.room-note{color:var(--muted);font-size:12px;margin-top:3px}.counter{display:grid;grid-template-columns:34px 1fr 34px;align-items:center;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:#fff}.counter button{height:36px;border:0;background:#f7f8fa;color:var(--brand);font-size:20px;cursor:pointer;font-weight:800}.counter button:hover{background:#edf1f4}.counter input{width:100%;border:0;text-align:center;font-weight:900;font-size:15px;outline:none;color:var(--ink)}.summary{position:sticky;top:18px}.estimate-hero{background:var(--brand);color:white;padding:24px}.estimate-hero .small{opacity:.8;font-size:13px;margin-bottom:6px}.fee{font-size:clamp(30px,4vw,42px);line-height:1.05;font-weight:950;letter-spacing:-.04em}.summary-body{padding:20px 22px 22px}.metric{display:flex;justify-content:space-between;gap:18px;padding:12px 0;border-bottom:1px solid var(--line);font-size:14px}.metric .key{color:var(--muted)}.metric .value{font-weight:900;text-align:right}.scope{margin-top:16px;padding:14px;background:var(--accent);border-radius:14px;color:#244437;font-size:13px;line-height:1.5}.scope strong{display:block;margin-bottom:6px;color:#173428}.flag{margin-top:12px;padding:12px 14px;border-radius:14px;background:var(--warning);color:#694b12;font-size:13px;line-height:1.45}.flag.custom{background:var(--danger);color:#7a2323}.footer-note{color:var(--muted);font-size:12px;line-height:1.45;margin-top:16px}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.btn{appearance:none;border:0;border-radius:999px;padding:11px 16px;font-weight:900;cursor:pointer}.btn.primary{background:var(--brand2);color:#241a05}.btn.secondary{background:#edf1f4;color:var(--brand)}
-  @media print{body{background:#fff}.wrap{max-width:none;padding:0}.grid{display:block}section.card,header .subtitle,.pill,.actions{display:none!important}.summary{position:static!important;box-shadow:none;border:0}.card{box-shadow:none}.estimate-hero{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
-</style>
+    :root{--ink:#19212a;--muted:#657181;--line:#e7ebf0;--soft:#f7f5f0;--card:#fff;--brand:#1f3a4a;--brand2:#c7a86b;--accent:#eef6f3;--warning:#fff4df;--danger:#fae8e8;--shadow:0 18px 45px rgba(21,33,45,.08);--radius:18px}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:linear-gradient(180deg,#faf8f3 0%,#f4f6f8 100%);color:var(--ink)}
+    button,input{font:inherit}
+    .wrap{max-width:1180px;margin:0 auto;padding:32px 18px 56px}
+    header{display:flex;justify-content:space-between;align-items:flex-start;gap:24px;margin-bottom:24px}
+    .brand-kicker{letter-spacing:.16em;text-transform:uppercase;color:var(--brand2);font-weight:700;font-size:12px;margin-bottom:10px}
+    h1{margin:0 0 8px;font-size:clamp(28px,4vw,44px);line-height:1.05;color:var(--brand)}
+    .subtitle{color:var(--muted);max-width:720px;font-size:16px;line-height:1.55;margin:0}
+    .pill{border:1px solid rgba(31,58,74,.15);background:rgba(255,255,255,.66);color:var(--brand);border-radius:999px;padding:10px 14px;font-weight:700;white-space:nowrap;font-size:13px}
+    .grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(320px,.78fr);gap:22px;align-items:start}
+    .card{background:var(--card);border:1px solid rgba(25,33,42,.08);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+    .card-section{padding:22px;border-bottom:1px solid var(--line)}
+    .card-section:last-child{border-bottom:0}
+    .step-label{display:flex;align-items:center;gap:10px;color:var(--brand);font-weight:800;margin:0 0 14px;font-size:15px}
+    .step-num{width:28px;height:28px;border-radius:50%;background:var(--brand);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:13px}
+    .service-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .service-card,.choice-card{border:1px solid var(--line);border-radius:14px;background:#fff;color:var(--ink);text-align:left;cursor:pointer;transition:.18s ease}
+    .service-card{padding:16px}
+    .service-card:hover,.choice-card:hover:not(:disabled){transform:translateY(-1px);border-color:rgba(199,168,107,.7)}
+    .service-card.active,.choice-card.active{border-color:var(--brand2);box-shadow:inset 0 0 0 1px var(--brand2);background:#fffaf0}
+    .service-card:focus-visible,.choice-card:focus-visible,.counter button:focus-visible,.counter input:focus-visible{outline:3px solid rgba(31,58,74,.2);outline-offset:2px}
+    .service-title{font-weight:900;color:var(--brand);margin-bottom:6px}
+    .service-copy{color:var(--muted);font-size:13px;line-height:1.45;margin:0}
+    .context-panel{display:grid;gap:16px;padding:16px;background:var(--soft);border-radius:14px;border:1px solid var(--line)}
+    .context-row{display:grid;gap:8px}
+    .context-label{font-size:12px;font-weight:800;color:var(--brand)}
+    .choice-grid{display:grid;gap:10px}
+    .choice-grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .choice-grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .choice-card{padding:11px 13px;font-weight:850;color:var(--brand);min-height:44px}
+    .choice-card:disabled{cursor:not-allowed;opacity:.42;background:#f3f4f5;color:var(--muted);transform:none}
+    .section-title{font-size:17px;font-weight:900;margin:4px 0 14px;color:var(--ink)}
+    .room-list{display:grid;gap:10px}
+    .room-row{display:grid;grid-template-columns:minmax(0,1fr) 128px;gap:14px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
+    .room-row:last-child{border-bottom:0}
+    .room-row.selected{background:#fffaf0;border:1px solid rgba(199,168,107,.55);border-radius:14px;padding:12px 14px;box-shadow:0 8px 22px rgba(199,168,107,.12)}
+    .room-row.selected .room-name{color:var(--brand)}
+    .room-name{font-weight:750}
+    .room-note{color:var(--muted);font-size:12px;margin-top:3px;line-height:1.4}
+    .counter{display:grid;grid-template-columns:34px 1fr 34px;align-items:center;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:#fff}
+    .counter button{height:36px;border:0;background:#f7f8fa;color:var(--brand);font-size:20px;cursor:pointer;font-weight:800}
+    .counter button:hover{background:#edf1f4}
+    .counter input{width:100%;border:0;text-align:center;font-weight:900;font-size:15px;outline:none;color:var(--ink)}
+    .summary{position:sticky;top:18px}
+    .estimate-hero{background:var(--brand);color:white;padding:24px}
+    .estimate-hero .small{opacity:.8;font-size:13px;margin-bottom:6px}
+    .fee{font-size:clamp(30px,4vw,42px);line-height:1.05;font-weight:950;letter-spacing:-.04em}
+    .summary-body{padding:20px 22px 22px}
+    .metric{display:flex;justify-content:space-between;gap:18px;padding:12px 0;border-bottom:1px solid var(--line);font-size:14px}
+    .metric .key{color:var(--muted)}
+    .metric .value{font-weight:900;text-align:right}
+    .scope{margin-top:16px;padding:14px;background:var(--accent);border-radius:14px;color:#244437;font-size:13px;line-height:1.5}
+    .scope strong{display:block;margin-bottom:6px;color:#173428}
+    .flag{margin-top:12px;padding:12px 14px;border-radius:14px;background:var(--warning);color:#694b12;font-size:13px;line-height:1.45}
+    .flag.custom{background:var(--danger);color:#7a2323}
+    .footer-note{color:var(--muted);font-size:12px;line-height:1.45;margin-top:16px}
+    .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+    .btn{appearance:none;border:0;border-radius:999px;padding:11px 16px;font-weight:900;cursor:pointer}
+    .btn.primary{background:var(--brand2);color:#241a05}
+    .btn.secondary{background:#edf1f4;color:var(--brand)}
+    @media(max-width:920px){header{display:block}.pill{display:inline-block;margin-top:16px}.grid{grid-template-columns:1fr}.summary{position:static!important}}
+    @media(max-width:620px){.service-grid,.choice-grid.two,.choice-grid.three{grid-template-columns:1fr}.room-row{grid-template-columns:minmax(0,1fr) 116px}.card-section{padding:18px}.choice-card{text-align:center}}
+    @media print{body{background:#fff}.wrap{max-width:none;padding:0}.grid{display:block}section.card,header .subtitle,.pill,.actions{display:none!important}.summary{position:static!important;box-shadow:none;border:0}.card{box-shadow:none}.estimate-hero{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+  </style>
 </head>
 <body>
 <div class="wrap">
-<header><div><div class="brand-kicker">October Six</div><h1>Design Fee & Renovation Investment Estimator</h1><p class="subtitle">Select a service and add the rooms you are planning. The calculator handles area count, scope premiums and planning-level project investment ranges in the background.</p></div><div class="pill">Preliminary estimate only</div></header>
-<main class="grid">
-<section class="card">
-<div class="card-section"><p class="step-label"><span class="step-num">1</span> Choose your service</p><div class="service-grid" id="serviceGrid"><div class="service-card" data-service="direction" role="button" tabindex="0" aria-pressed="false"><div class="service-title">Design Direction</div><p class="service-copy">A concise direction package for style, layout guidance and early decision-making.</p></div><div class="service-card active" data-service="signature" role="button" tabindex="0" aria-pressed="true"><div class="service-title">Signature Design</div><p class="service-copy">A developed design package with plans, key elevations, materials and visualization.</p></div></div></div>
-<div class="card-section"><p class="step-label"><span class="step-num">2</span> Project context</p><div class="basement-controls project-context-controls"><div><label for="propertyType">Property type</label><select id="propertyType"><option value="condo" selected>Condo / apartment</option><option value="house">House / freehold</option></select></div><div><label for="projectScope">Project area</label><select id="projectScope"><option value="main" selected>Main home</option><option value="basement">Basement</option><option value="both">Main home + basement</option></select></div></div></div>
-<div class="card-section" id="mainHomeSection"><p class="step-label"><span class="step-num">3</span> Add project areas</p><div class="section-title">Main Home</div><div class="room-list" id="mainRooms"></div></div>
-<div class="card-section" id="basementSection" style="display:none"><div class="section-title">Basement</div><div class="room-list" id="basementRooms"></div></div>
-</section>
-<aside class="card summary"><div class="estimate-hero"><div class="small">Your preliminary estimate</div><div class="fee" id="designFee">$0 CAD</div></div><div class="summary-body"><div class="metric"><div class="key">Selected service</div><div class="value" id="serviceLabel">Signature Design</div></div><div class="metric"><div class="key">Areas selected</div><div class="value" id="areasSelected">0</div></div><div class="metric"><div class="key">Suggested total project investment</div><div class="value" id="renoBudget">$0 CAD</div></div><div class="metric"><div class="key">Design fee as share of total budget</div><div class="value" id="feeShare">N/A</div></div><div class="scope" id="scopeBox"><strong>Selected scope</strong>No rooms selected yet.</div><div class="flag" id="noteBox">Select rooms using the plus and minus controls. Switching Project area preserves your cart so you can compare Main Home, Basement and Both.</div><div class="actions"><button class="btn primary" type="button" onclick="window.print()">Print estimate</button><button class="btn secondary" type="button" id="clearCartBtn">Clear cart</button><button class="btn secondary" type="button" id="resetBtn">Reset all</button></div><p class="footer-note">This tool provides a preliminary planning estimate, not a quotation. Total project investment includes the displayed design fee and a planning allowance for implementation. Final fees and costs depend on confirmed scope, site conditions and selections.</p></div></aside>
-</main></div>
+  <header>
+    <div>
+      <div class="brand-kicker">October Six</div>
+      <h1>Design Fee & Renovation Investment Estimator</h1>
+      <p class="subtitle">Select a service and add the rooms you are planning. The calculator accounts for the different levels of design development required by each space and modest efficiencies across repeated room types.</p>
+    </div>
+    <div class="pill">Preliminary estimate only</div>
+  </header>
+
+  <main class="grid">
+    <section class="card">
+      <div class="card-section">
+        <p class="step-label"><span class="step-num">1</span> Choose your service</p>
+        <div class="service-grid" id="serviceGrid">
+          <button class="service-card" data-service="direction" type="button" aria-pressed="false">
+            <div class="service-title">Design Direction</div>
+            <p class="service-copy">A concise direction package for style, layout guidance and early decision-making.</p>
+          </button>
+          <button class="service-card active" data-service="signature" type="button" aria-pressed="true">
+            <div class="service-title">Signature Design</div>
+            <p class="service-copy">A developed design package with plans, key elevations, materials and visualization.</p>
+          </button>
+        </div>
+      </div>
+
+      <div class="card-section">
+        <p class="step-label"><span class="step-num">2</span> Project context</p>
+        <div class="context-panel">
+          <div class="context-row">
+            <div class="context-label">Property type</div>
+            <div class="choice-grid two" id="propertyTypeGroup" role="group" aria-label="Property type">
+              <button class="choice-card active" type="button" data-property="house" aria-pressed="true">House / freehold</button>
+              <button class="choice-card" type="button" data-property="condo" aria-pressed="false">Condo / apartment</button>
+            </div>
+          </div>
+          <div class="context-row">
+            <div class="context-label">Project area</div>
+            <div class="choice-grid three" id="projectScopeGroup" role="group" aria-label="Project area">
+              <button class="choice-card active" type="button" data-scope="main" aria-pressed="true">Main home</button>
+              <button class="choice-card" type="button" data-scope="basement" aria-pressed="false">Basement</button>
+              <button class="choice-card" type="button" data-scope="both" aria-pressed="false">Main home + basement</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-section" id="mainHomeSection">
+        <p class="step-label"><span class="step-num">3</span> Add project areas</p>
+        <div class="section-title">Main Home</div>
+        <div class="room-list" id="mainRooms"></div>
+      </div>
+
+      <div class="card-section" id="basementSection" style="display:none">
+        <div class="section-title">Basement</div>
+        <div class="room-list" id="basementRooms"></div>
+      </div>
+    </section>
+
+    <aside class="card summary">
+      <div class="estimate-hero">
+        <div class="small">Your preliminary estimate</div>
+        <div class="fee" id="designFee">$0 CAD</div>
+      </div>
+      <div class="summary-body">
+        <div class="metric"><div class="key">Selected service</div><div class="value" id="serviceLabel">Signature Design</div></div>
+        <div class="metric"><div class="key">Areas selected</div><div class="value" id="areasSelected">0</div></div>
+        <div class="metric"><div class="key">Suggested total project investment</div><div class="value" id="renoBudget">$0 CAD</div></div>
+        <div class="metric"><div class="key">Design fee as share of total budget</div><div class="value" id="feeShare">N/A</div></div>
+        <div class="scope" id="scopeBox"><strong>Selected scope</strong>No rooms selected yet.</div>
+        <div class="flag" id="noteBox">Select rooms using the plus and minus controls. Your house and condo selections are stored in separate carts while you compare project types.</div>
+        <div class="actions">
+          <button class="btn primary" type="button" onclick="window.print()">Print estimate</button>
+          <button class="btn secondary" type="button" id="clearCartBtn">Clear cart</button>
+          <button class="btn secondary" type="button" id="resetBtn">Reset all</button>
+        </div>
+        <p class="footer-note">This tool provides a preliminary planning estimate, not a quotation. Total project investment includes the displayed design fee and a planning allowance for implementation. Final fees and costs depend on confirmed scope, site conditions and selections.</p>
+      </div>
+    </aside>
+  </main>
+</div>
+
 <script>
-const pricing={
-  direction:{1:700,2:900,3:1100,4:1200,5:1300,6:1400},
-  signature:{1:1800,2:3000,3:4100,4:5000,5:5800,6:6500},
-  extraSpace:{direction:150,signature:600},
-  buffer:[{min:1,max:2,amount:200},{min:3,max:4,amount:300},{min:5,max:6,amount:400},{min:7,max:Infinity,amount:600}],
-  investmentEnvelope:{condo:{low:.9,high:1},house:{low:.95,high:1.1}},
-  maxDesignShare:.20
+const pricing = {
+  direction: {1:700,2:900,3:1100,4:1200,5:1300,6:1400},
+  directionExtraArea: 150,
+  signatureCurve: {1:1800,2:3000,3:4100,4:5000,5:5800,6:6500},
+  investmentEnvelope: {condo:{low:.9,high:1},house:{low:.95,high:1.1}},
+  maxDesignShare: .20,
+  highScopeAllowance: 1.08
 };
-const mainRooms=[
-{id:'kitchen',label:'Kitchen',note:'Counts as one area. Signature premium applies.',units:1,premium:400,houseLow:45000,houseHigh:90000,condoLow:25000,condoHigh:50000},
-{id:'living',label:'Living Room',note:'Standard area.',units:1,premium:0,houseLow:15000,houseHigh:35000,condoLow:5000,condoHigh:12000},
-{id:'dining',label:'Dining Room',note:'Standard area.',units:1,premium:0,houseLow:10000,houseHigh:25000,condoLow:4000,condoHigh:10000},
-{id:'family',label:'Family Room',note:'Standard area.',units:1,premium:0,houseLow:15000,houseHigh:35000,condoLow:5000,condoHigh:15000},
-{id:'bedroom',label:'Bedroom',note:'Primary, guest, nursery or standard bedroom.',units:1,premium:0,houseLow:8000,houseHigh:20000,condoLow:4000,condoHigh:9000},
-{id:'office',label:'Office / Den',note:'Standard area.',units:1,premium:0,houseLow:8000,houseHigh:20000,condoLow:5000,condoHigh:12000},
-{id:'fullbath',label:'Full Bathroom / Ensuite',note:'Counts as one area. Signature premium applies.',units:1,premium:200,houseLow:20000,houseHigh:45000,condoLow:15000,condoHigh:30000},
-{id:'powder',label:'Powder Room',note:'Small bathroom.',units:1,premium:0,houseLow:8000,houseHigh:18000,condoLow:5000,condoHigh:10000},
-{id:'entry',label:'Entry / Foyer',note:'Standard area.',units:1,premium:0,houseLow:8000,houseHigh:18000,condoLow:5000,condoHigh:10000},
-{id:'laundry',label:'Laundry / Mudroom',note:'Functional area.',units:1,premium:0,houseLow:15000,houseHigh:35000,condoLow:8000,condoHigh:20000}
-];
-const basementRooms=[
-{id:'b_rec',label:'Recreation / Family Room',note:'Planning range scales with selected basement scope.',units:1,premium:0,low:20000,high:45000},
-{id:'b_bedroom',label:'Basement Bedroom',note:'Includes planning allowance for a finished bedroom.',units:1,premium:0,low:10000,high:20000},
-{id:'b_office',label:'Office / Gym',note:'Includes planning allowance for a finished flexible room.',units:1,premium:0,low:8000,high:18000},
-{id:'b_fullbath',label:'Basement Full Bathroom / Ensuite',note:'Signature premium applies.',units:1,premium:200,low:20000,high:40000},
-{id:'b_powder',label:'Powder Room',note:'Planning range scales with selected basement scope.',units:1,premium:0,low:8000,high:15000},
-{id:'b_wetbar',label:'Kitchenette / Wet Bar',note:'Signature complexity premium applies.',units:1,premium:300,low:15000,high:35000},
-{id:'b_other',label:'Other Room',note:'General finished-room planning allowance.',units:1,premium:0,low:8000,high:18000}
-];
-const state={service:'signature',qty:{}};
-function money(v){return !isFinite(v)||v<=0?'$0 CAD':'$'+Math.round(v).toLocaleString('en-CA')+' CAD'}
-function pct(v){return isFinite(v)?(v*100).toFixed(1)+'%':'N/A'}
-function normalizeQty(value){return Math.min(20,Math.max(0,Math.floor(Number(value)||0)))}
-function baseFee(service,units){if(units<=0)return 0;const table=pricing[service];return units<=6?table[units]:table[6]+pricing.extraSpace[service]*(units-6)}
-function rangeBuffer(units){const t=pricing.buffer.find(x=>units>=x.min&&units<=x.max);return t?t.amount:0}
-function totalQtyFor(list){return list.reduce((sum,room)=>sum+normalizeQty(state.qty[room.id]),0)}
-function renderRooms(list,targetId){const target=document.getElementById(targetId);target.innerHTML='';list.forEach(room=>{state.qty[room.id]=normalizeQty(state.qty[room.id]);const row=document.createElement('div');row.className='room-row';row.innerHTML=`<div><div class="room-name">${room.label}</div><div class="room-note">${room.note}</div></div><div class="counter" aria-label="Quantity selector for ${room.label}"><button type="button" data-action="minus" data-id="${room.id}" aria-label="Remove one ${room.label}">−</button><input type="number" min="0" max="20" step="1" inputmode="numeric" value="${state.qty[room.id]}" data-id="${room.id}" aria-label="Quantity for ${room.label}" /><button type="button" data-action="plus" data-id="${room.id}" aria-label="Add one ${room.label}">+</button></div>`;target.appendChild(row)})}
-function calculate(){
-  let units=0,premium=0,implementationLow=0,implementationHigh=0,selected=[];
-  const propertyType=document.getElementById('propertyType').value;
-  const projectScope=document.getElementById('projectScope').value;
-  const includeMain=projectScope==='main'||projectScope==='both';
-  const includeBasement=propertyType==='house'&&(projectScope==='basement'||projectScope==='both');
-  const env=pricing.investmentEnvelope[propertyType];
-  if(includeMain){mainRooms.forEach(room=>{const qty=normalizeQty(state.qty[room.id]);if(qty>0){units+=qty*room.units;if(state.service==='signature')premium+=qty*room.premium;const lowKey=propertyType==='condo'?'condoLow':'houseLow';const highKey=propertyType==='condo'?'condoHigh':'houseHigh';implementationLow+=qty*room[lowKey]*env.low;implementationHigh+=qty*room[highKey]*env.high;selected.push(`${qty} ${room.label}`)}})}
-  if(includeBasement){basementRooms.forEach(room=>{const qty=normalizeQty(state.qty[room.id]);if(qty>0){units+=qty*room.units;if(state.service==='signature')premium+=qty*room.premium;implementationLow+=qty*room.low;implementationHigh+=qty*room.high;selected.push(`${qty} ${room.label}`)}})}
-  const designLow=baseFee(state.service,units)+premium;
-  const designHigh=state.service==='signature'&&units>0?designLow+rangeBuffer(units):designLow;
-  const rawTotalLow=implementationLow+designLow;
-  const rawTotalHigh=implementationHigh+designHigh;
-  const shareFloorLow=designHigh/pricing.maxDesignShare;
-  const shareFloorHigh=designHigh/pricing.maxDesignShare;
-  const totalLow=units>0?Math.max(rawTotalLow,shareFloorLow):0;
-  const totalHigh=units>0?Math.max(rawTotalHigh,shareFloorHigh,totalLow):0;
-  const budgetAdjusted=totalLow>rawTotalLow+1||totalHigh>rawTotalHigh+1;
-  return{units,designLow,designHigh,totalLow,totalHigh,selected,custom:units>=7,budgetAdjusted};
-}
-function updateSelectedCards(){document.querySelectorAll('.room-row').forEach(row=>{const input=row.querySelector('input[data-id]');const qty=input?Number(input.value)||0:0;row.classList.toggle('selected',qty>0)})}
-function updateSummary(){updateSelectedCards();const r=calculate();document.getElementById('serviceLabel').textContent=state.service==='signature'?'Signature Design':'Design Direction';document.getElementById('areasSelected').textContent=r.units;document.getElementById('designFee').textContent=r.units>0?(r.designLow===r.designHigh?money(r.designLow):`${money(r.designLow).replace(' CAD','')} – ${money(r.designHigh)}`):'$0 CAD';document.getElementById('renoBudget').textContent=r.units>0?(r.totalLow===r.totalHigh?money(r.totalLow):`${money(r.totalLow).replace(' CAD','')} – ${money(r.totalHigh)}`):'$0 CAD';document.getElementById('feeShare').textContent=r.totalLow>0&&r.totalHigh>0?`${pct(r.designLow/r.totalHigh)} – ${pct(r.designHigh/r.totalLow)}`:'N/A';document.getElementById('scopeBox').innerHTML=`<strong>Selected scope</strong>${r.selected.length?r.selected.join('; ')+';':'No rooms selected yet.'}`;const note=document.getElementById('noteBox');note.className='flag';if(r.units===0){note.textContent='Select rooms using the plus and minus controls. Switching Project area preserves your cart so you can compare eligible project scopes.'}else if(r.custom){note.classList.add('custom');note.textContent='This is a 7+ area project. The calculator provides a planning estimate, but a custom scope review is required before confirming a fixed fee.'}else if(r.budgetAdjusted){note.textContent='The suggested total project investment has been adjusted to keep the design fee within 20% of the overall project budget, consistent with this calculator’s planning guardrail.'}else if(state.service==='direction'){note.textContent='Design Direction uses flat pricing by internally calculated area count. Kitchen and bathroom premiums do not apply.'}else{note.textContent='Signature Design includes applicable kitchen, wet-bar and full-bath complexity premiums plus a planning range buffer.'}}
 
+const repeatProfiles = {
+  bedroom: {factors:[1,.88,.82],floor:.78},
+  fullbath: {factors:[1,.94,.90],floor:.86},
+  kitchen: {factors:[1,.95],floor:.92},
+  standard: {factors:[1,.90,.85],floor:.80}
+};
 
-function syncProjectScopeVisibility(){
-  const propertyType=document.getElementById('propertyType').value;
-  const scopeSelect=document.getElementById('projectScope');
-  [...scopeSelect.options].forEach(option=>{if(option.value==='basement'||option.value==='both')option.disabled=propertyType==='condo'});
-  if(propertyType==='condo'&&scopeSelect.value!=='main')scopeSelect.value='main';
-  const scope=scopeSelect.value;
-  const showMain=scope==='main'||scope==='both';
-  const showBasement=propertyType==='house'&&(scope==='basement'||scope==='both');
-  document.getElementById('mainHomeSection').style.display=showMain?'block':'none';
-  document.getElementById('basementSection').style.display=showBasement?'block':'none';
+const mainRooms = [
+  {id:'kitchen',label:'Kitchen',note:'High-detail technical area with cabinetry, appliance, lighting and material coordination.',weight:1.60,repeatGroup:'kitchen',repeatProfile:'kitchen',houseLow:45000,houseHigh:90000,condoLow:25000,condoHigh:50000},
+  {id:'living',label:'Living Room',note:'Primary shared living area.',weight:1.00,repeatGroup:'living',repeatProfile:'standard',houseLow:15000,houseHigh:35000,condoLow:5000,condoHigh:12000},
+  {id:'dining',label:'Dining Room',note:'Dining layout, lighting and finish coordination.',weight:.80,repeatGroup:'dining',repeatProfile:'standard',houseLow:10000,houseHigh:25000,condoLow:4000,condoHigh:10000},
+  {id:'family',label:'Family Room',note:'Independent shared living or media area.',weight:1.00,repeatGroup:'family',repeatProfile:'standard',houseLow:15000,houseHigh:35000,condoLow:5000,condoHigh:15000},
+  {id:'bedroom',label:'Bedroom',note:'Primary, guest, nursery or standard bedroom; each room remains individually planned.',weight:.85,repeatGroup:'bedroom',repeatProfile:'bedroom',houseLow:8000,houseHigh:20000,condoLow:4000,condoHigh:9000},
+  {id:'office',label:'Office / Den',note:'Functional planning, task lighting, storage and furniture coordination.',weight:.90,repeatGroup:'office',repeatProfile:'standard',houseLow:8000,houseHigh:20000,condoLow:5000,condoHigh:12000},
+  {id:'fullbath',label:'Full Bathroom / Ensuite',note:'Technical wet area with fixture, lighting, tile and elevation development.',weight:1.35,repeatGroup:'fullbath',repeatProfile:'fullbath',houseLow:20000,houseHigh:45000,condoLow:15000,condoHigh:30000},
+  {id:'powder',label:'Powder Room',note:'Compact area with concentrated finish and fixture decisions.',weight:.85,repeatGroup:'powder',repeatProfile:'standard',houseLow:8000,houseHigh:18000,condoLow:5000,condoHigh:10000},
+  {id:'entry',label:'Entry / Foyer',note:'Arrival, circulation, lighting and storage coordination.',weight:.65,repeatGroup:'entry',repeatProfile:'standard',houseLow:8000,houseHigh:18000,condoLow:5000,condoHigh:10000},
+  {id:'laundry',label:'Laundry / Mudroom',note:'Functional area with appliance, storage and utility coordination.',weight:1.05,repeatGroup:'laundry',repeatProfile:'standard',houseLow:15000,houseHigh:35000,condoLow:8000,condoHigh:20000}
+];
+
+const basementRooms = [
+  {id:'b_rec',label:'Recreation / Family Room',note:'Primary basement living or recreation area.',weight:1.00,repeatGroup:'b_rec',repeatProfile:'standard',low:20000,high:45000},
+  {id:'b_bedroom',label:'Basement Bedroom',note:'Each bedroom remains individually planned for layout, lighting and use.',weight:.85,repeatGroup:'bedroom',repeatProfile:'bedroom',low:10000,high:20000},
+  {id:'b_office',label:'Office / Gym',note:'Flexible room with functional, lighting and equipment planning.',weight:.90,repeatGroup:'office',repeatProfile:'standard',low:8000,high:18000},
+  {id:'b_fullbath',label:'Basement Full Bathroom / Ensuite',note:'Technical wet area with fixture, lighting, tile and elevation development.',weight:1.35,repeatGroup:'fullbath',repeatProfile:'fullbath',low:20000,high:40000},
+  {id:'b_powder',label:'Powder Room',note:'Compact area with concentrated finish and fixture decisions.',weight:.85,repeatGroup:'powder',repeatProfile:'standard',low:8000,high:15000},
+  {id:'b_wetbar',label:'Kitchenette / Wet Bar',note:'Cabinetry, appliance, plumbing, lighting and material coordination.',weight:1.25,repeatGroup:'wetbar',repeatProfile:'kitchen',low:15000,high:35000},
+  {id:'b_other',label:'Other Room',note:'General finished-room planning allowance.',weight:.75,repeatGroup:'other',repeatProfile:'standard',low:8000,high:18000}
+];
+
+function makeCart(scope='main') { return {scope, qty:{}}; }
+
+const state = {
+  service: 'signature',
+  propertyType: 'house',
+  carts: {
+    house: makeCart('main'),
+    condo: makeCart('main')
+  }
+};
+
+function activeCart() { return state.carts[state.propertyType]; }
+function allRooms() { return [...mainRooms,...basementRooms]; }
+function money(v) { return !isFinite(v)||v<=0?'$0 CAD':'$'+Math.round(v).toLocaleString('en-CA')+' CAD'; }
+function pct(v) { return isFinite(v)?(v*100).toFixed(1)+'%':'N/A'; }
+function normalizeQty(value) { return Math.min(20,Math.max(0,Math.floor(Number(value)||0))); }
+function roundHundred(value) { return Math.round(value/100)*100; }
+
+function directionFee(areaCount) {
+  if (areaCount <= 0) return 0;
+  if (areaCount <= 6) return pricing.direction[areaCount];
+  return pricing.direction[6] + pricing.directionExtraArea * (areaCount - 6);
 }
-function clearHiddenProjectAreas(){
-  // Keep all shopping cart selections when switching Project area.
-  // Hidden sections are not displayed, but their quantities are preserved so clients can compare Main Home, Basement and Both without re-entering selections.
-  document.querySelectorAll('.counter input').forEach(input=>{input.value=state.qty[input.dataset.id]||0});
+
+function signatureFeeRaw(points) {
+  if (points <= 0) return 0;
+  const p = Math.max(1,points);
+  if (p <= 6) {
+    const lower = Math.floor(p);
+    const upper = Math.ceil(p);
+    if (lower === upper) return pricing.signatureCurve[lower];
+    const lowFee = pricing.signatureCurve[lower];
+    const highFee = pricing.signatureCurve[upper];
+    return lowFee + (p-lower) * (highFee-lowFee);
+  }
+  if (p <= 10) return pricing.signatureCurve[6] + (p-6)*600;
+  if (p <= 14) return pricing.signatureCurve[6] + 4*600 + (p-10)*700;
+  return pricing.signatureCurve[6] + 4*600 + 4*700 + (p-14)*800;
 }
-function attachEvents(){document.getElementById('serviceGrid').addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.closest('.service-card')){e.preventDefault();e.target.closest('.service-card').click()}});document.getElementById('serviceGrid').addEventListener('click',e=>{const card=e.target.closest('.service-card');if(!card)return;state.service=card.dataset.service;document.querySelectorAll('.service-card').forEach(c=>{c.classList.remove('active');c.setAttribute('aria-pressed','false')});card.classList.add('active');card.setAttribute('aria-pressed','true');updateSummary()});document.body.addEventListener('click',e=>{const btn=e.target.closest('button[data-action]');if(!btn)return;const id=btn.dataset.id;const current=Number(state.qty[id])||0;state.qty[id]=btn.dataset.action==='plus'?current+1:Math.max(0,current-1);const input=document.querySelector(`input[data-id="${id}"]`);if(input)input.value=state.qty[id];updateSummary()});document.body.addEventListener('input',e=>{const input=e.target.closest('input[data-id]');if(!input)return;state.qty[input.dataset.id]=normalizeQty(input.value);input.value=state.qty[input.dataset.id];updateSummary()});document.getElementById('propertyType').addEventListener('change',()=>{syncProjectScopeVisibility();updateSummary()});document.getElementById('projectScope').addEventListener('change',()=>{clearHiddenProjectAreas();syncProjectScopeVisibility();updateSummary()});document.getElementById('clearCartBtn').addEventListener('click',()=>{const confirmed=window.confirm('Clear all selected project areas? Your service and property type settings will stay the same.');if(!confirmed)return;Object.keys(state.qty).forEach(key=>state.qty[key]=0);document.querySelectorAll('.counter input').forEach(input=>input.value=0);updateSummary()});document.getElementById('resetBtn').addEventListener('click',()=>{const confirmed=window.confirm('Reset everything? This will clear all selected project areas and restore the default service and property type.');if(!confirmed)return;Object.keys(state.qty).forEach(key=>state.qty[key]=0);document.querySelectorAll('.counter input').forEach(input=>input.value=0);document.getElementById('propertyType').value='condo';document.getElementById('projectScope').value='main';syncProjectScopeVisibility();state.service='signature';document.querySelectorAll('.service-card').forEach(c=>{const active=c.dataset.service==='signature';c.classList.toggle('active',active);c.setAttribute('aria-pressed',String(active))});updateSummary()})}
-renderRooms(mainRooms,'mainRooms');renderRooms(basementRooms,'basementRooms');attachEvents();syncProjectScopeVisibility();updateSummary();
+
+function repeatFactor(profileName, ordinal) {
+  const profile = repeatProfiles[profileName] || repeatProfiles.standard;
+  return profile.factors[ordinal-1] ?? profile.floor;
+}
+
+function getIncludedRooms(propertyType=state.propertyType, scope=activeCart().scope) {
+  const included = [];
+  if (scope === 'main' || scope === 'both') included.push(...mainRooms);
+  if (propertyType === 'house' && (scope === 'basement' || scope === 'both')) included.push(...basementRooms);
+  return included;
+}
+
+function calculateScopePoints(rooms, cart) {
+  const groupCounts = {};
+  let points = 0;
+  for (const room of rooms) {
+    const qty = normalizeQty(cart.qty[room.id]);
+    for (let i=0;i<qty;i++) {
+      const ordinal = (groupCounts[room.repeatGroup] || 0) + 1;
+      groupCounts[room.repeatGroup] = ordinal;
+      points += room.weight * repeatFactor(room.repeatProfile,ordinal);
+    }
+  }
+  return {points,groupCounts};
+}
+
+function customScopeAssessment({propertyType,scope,areaCount,scopePoints,groupCounts}) {
+  const cookingZones = (groupCounts.kitchen||0) + (groupCounts.wetbar||0);
+  const fullBaths = groupCounts.fullbath || 0;
+  const maxRepeated = Math.max(0,...Object.values(groupCounts));
+  const reasons = [];
+
+  if (propertyType === 'condo') {
+    if (areaCount >= 8 || scopePoints >= 8) reasons.push('full-condo scale');
+    if (cookingZones >= 2 || fullBaths >= 3 || maxRepeated >= 4) reasons.push('non-standard condo complexity');
+  } else {
+    const scaleLimit = scope === 'main'
+      ? (areaCount >= 13 || scopePoints >= 12)
+      : scope === 'basement'
+        ? (areaCount >= 8 || scopePoints >= 8)
+        : (areaCount >= 11 || scopePoints >= 10.5);
+    if (scaleLimit) reasons.push(scope === 'both' ? 'multi-level whole-home scale' : `${scope} scope scale`);
+    if (cookingZones >= 3 || fullBaths >= 5 || maxRepeated >= 6) reasons.push('non-standard house complexity');
+  }
+
+  return {custom:reasons.length>0,reasons};
+}
+
+function renderRooms(list,targetId) {
+  const target = document.getElementById(targetId);
+  target.innerHTML = '';
+  list.forEach(room => {
+    const row = document.createElement('div');
+    row.className = 'room-row';
+    row.dataset.id = room.id;
+    row.innerHTML = `<div><div class="room-name">${room.label}</div><div class="room-note">${room.note}</div></div><div class="counter" aria-label="Quantity selector for ${room.label}"><button type="button" data-action="minus" data-id="${room.id}" aria-label="Remove one ${room.label}">−</button><input type="number" min="0" max="20" step="1" inputmode="numeric" value="0" data-id="${room.id}" aria-label="Quantity for ${room.label}" /><button type="button" data-action="plus" data-id="${room.id}" aria-label="Add one ${room.label}">+</button></div>`;
+    target.appendChild(row);
+  });
+}
+
+function calculate() {
+  const propertyType = state.propertyType;
+  const cart = activeCart();
+  const projectScope = cart.scope;
+  const includedRooms = getIncludedRooms(propertyType,projectScope);
+  const env = pricing.investmentEnvelope[propertyType];
+  let areaCount = 0;
+  let implementationLow = 0;
+  let implementationHigh = 0;
+  const selected = [];
+
+  includedRooms.forEach(room => {
+    const qty = normalizeQty(cart.qty[room.id]);
+    if (qty <= 0) return;
+    areaCount += qty;
+    if (room.id.startsWith('b_')) {
+      implementationLow += qty * room.low;
+      implementationHigh += qty * room.high;
+    } else {
+      const lowKey = propertyType === 'condo' ? 'condoLow' : 'houseLow';
+      const highKey = propertyType === 'condo' ? 'condoHigh' : 'houseHigh';
+      implementationLow += qty * room[lowKey] * env.low;
+      implementationHigh += qty * room[highKey] * env.high;
+    }
+    selected.push(`${qty} ${room.label}`);
+  });
+
+  const {points:scopePoints,groupCounts} = calculateScopePoints(includedRooms,cart);
+  let designLow = 0;
+  let designHigh = 0;
+
+  if (state.service === 'direction') {
+    designLow = directionFee(areaCount);
+    designHigh = designLow;
+  } else if (areaCount > 0) {
+    designLow = roundHundred(signatureFeeRaw(scopePoints));
+    const highFromScope = roundHundred(signatureFeeRaw(scopePoints * pricing.highScopeAllowance));
+    designHigh = Math.max(designLow + 200,highFromScope);
+  }
+
+  const rawTotalLow = implementationLow + designLow;
+  const rawTotalHigh = implementationHigh + designHigh;
+  const shareFloor = designHigh > 0 ? designHigh / pricing.maxDesignShare : 0;
+  const totalLow = areaCount > 0 ? Math.max(rawTotalLow,shareFloor) : 0;
+  const totalHigh = areaCount > 0 ? Math.max(rawTotalHigh,shareFloor,totalLow) : 0;
+  const budgetAdjusted = totalLow > rawTotalLow + 1 || totalHigh > rawTotalHigh + 1;
+  const customAssessment = customScopeAssessment({propertyType,scope:projectScope,areaCount,scopePoints,groupCounts});
+
+  return {
+    propertyType,projectScope,areaCount,scopePoints,groupCounts,
+    designLow,designHigh,totalLow,totalHigh,selected,budgetAdjusted,
+    custom:customAssessment.custom,customReasons:customAssessment.reasons
+  };
+}
+
+function syncInputsFromCart() {
+  const cart = activeCart();
+  document.querySelectorAll('.counter input[data-id]').forEach(input => {
+    input.value = normalizeQty(cart.qty[input.dataset.id]);
+  });
+}
+
+function syncControls() {
+  document.querySelectorAll('[data-property]').forEach(button => {
+    const active = button.dataset.property === state.propertyType;
+    button.classList.toggle('active',active);
+    button.setAttribute('aria-pressed',String(active));
+  });
+
+  const cart = activeCart();
+  if (state.propertyType === 'condo') cart.scope = 'main';
+  document.querySelectorAll('[data-scope]').forEach(button => {
+    const isCondoRestricted = state.propertyType === 'condo' && button.dataset.scope !== 'main';
+    button.disabled = isCondoRestricted;
+    button.setAttribute('aria-disabled',String(isCondoRestricted));
+    const active = button.dataset.scope === cart.scope;
+    button.classList.toggle('active',active);
+    button.setAttribute('aria-pressed',String(active));
+  });
+
+  const showMain = cart.scope === 'main' || cart.scope === 'both';
+  const showBasement = state.propertyType === 'house' && (cart.scope === 'basement' || cart.scope === 'both');
+  document.getElementById('mainHomeSection').style.display = showMain ? 'block' : 'none';
+  document.getElementById('basementSection').style.display = showBasement ? 'block' : 'none';
+}
+
+function updateSelectedCards() {
+  const cart = activeCart();
+  document.querySelectorAll('.room-row').forEach(row => {
+    row.classList.toggle('selected',normalizeQty(cart.qty[row.dataset.id]) > 0);
+  });
+}
+
+function updateSummary() {
+  syncControls();
+  syncInputsFromCart();
+  updateSelectedCards();
+  const result = calculate();
+  document.getElementById('serviceLabel').textContent = state.service === 'signature' ? 'Signature Design' : 'Design Direction';
+  document.getElementById('areasSelected').textContent = result.areaCount;
+  document.getElementById('designFee').textContent = result.areaCount > 0
+    ? (result.designLow === result.designHigh ? money(result.designLow) : `${money(result.designLow).replace(' CAD','')} – ${money(result.designHigh)}`)
+    : '$0 CAD';
+  document.getElementById('renoBudget').textContent = result.areaCount > 0
+    ? (result.totalLow === result.totalHigh ? money(result.totalLow) : `${money(result.totalLow).replace(' CAD','')} – ${money(result.totalHigh)}`)
+    : '$0 CAD';
+  document.getElementById('feeShare').textContent = result.totalLow > 0 && result.totalHigh > 0
+    ? `${pct(result.designLow/result.totalHigh)} – ${pct(result.designHigh/result.totalLow)}`
+    : 'N/A';
+  document.getElementById('scopeBox').innerHTML = `<strong>Selected scope</strong>${result.selected.length ? result.selected.join('; ')+';' : 'No rooms selected yet.'}`;
+
+  const note = document.getElementById('noteBox');
+  note.className = 'flag';
+  if (result.areaCount === 0) {
+    note.textContent = 'Select rooms using the plus and minus controls. Your house and condo selections are stored in separate carts while you compare project types.';
+  } else if (result.custom) {
+    note.classList.add('custom');
+    const propertyLabel = result.propertyType === 'condo' ? 'condo' : 'house';
+    note.textContent = `This selection exceeds the standard planning range for a ${propertyLabel} project. The calculator provides a preliminary estimate, but a custom scope review is required before confirming a fixed fee.`;
+  } else if (result.budgetAdjusted) {
+    note.textContent = 'The suggested total project investment has been adjusted to keep the design fee within 20% of the overall project budget, consistent with this calculator’s planning guardrail.';
+  } else if (state.service === 'direction') {
+    note.textContent = 'Design Direction uses flat pricing based on the number of selected areas. Technical-space weighting does not apply to this service.';
+  } else {
+    note.textContent = 'Signature Design reflects the mix of spaces selected. Technical rooms require more design development, while repeated room types receive only a modest efficiency adjustment.';
+  }
+}
+
+function selectService(service) {
+  state.service = service;
+  document.querySelectorAll('[data-service]').forEach(button => {
+    const active = button.dataset.service === service;
+    button.classList.toggle('active',active);
+    button.setAttribute('aria-pressed',String(active));
+  });
+  updateSummary();
+}
+
+function selectProperty(propertyType) {
+  if (!state.carts[propertyType]) return;
+  state.propertyType = propertyType;
+  updateSummary();
+}
+
+function selectScope(scope) {
+  if (state.propertyType === 'condo' && scope !== 'main') return;
+  activeCart().scope = scope;
+  updateSummary();
+}
+
+function setQuantity(id,value) {
+  activeCart().qty[id] = normalizeQty(value);
+  updateSummary();
+}
+
+function clearActiveCart() {
+  activeCart().qty = {};
+  updateSummary();
+}
+
+function resetAll() {
+  state.service = 'signature';
+  state.propertyType = 'house';
+  state.carts.house = makeCart('main');
+  state.carts.condo = makeCart('main');
+  selectService('signature');
+}
+
+function attachEvents() {
+  document.getElementById('serviceGrid').addEventListener('click',event => {
+    const button = event.target.closest('[data-service]');
+    if (button) selectService(button.dataset.service);
+  });
+
+  document.getElementById('propertyTypeGroup').addEventListener('click',event => {
+    const button = event.target.closest('[data-property]');
+    if (button) selectProperty(button.dataset.property);
+  });
+
+  document.getElementById('projectScopeGroup').addEventListener('click',event => {
+    const button = event.target.closest('[data-scope]');
+    if (button && !button.disabled) selectScope(button.dataset.scope);
+  });
+
+  document.body.addEventListener('click',event => {
+    const button = event.target.closest('button[data-action]');
+    if (!button) return;
+    const id = button.dataset.id;
+    const current = normalizeQty(activeCart().qty[id]);
+    setQuantity(id,button.dataset.action === 'plus' ? current+1 : current-1);
+  });
+
+  document.body.addEventListener('input',event => {
+    const input = event.target.closest('input[data-id]');
+    if (!input) return;
+    setQuantity(input.dataset.id,input.value);
+  });
+
+  document.getElementById('clearCartBtn').addEventListener('click',() => {
+    const label = state.propertyType === 'house' ? 'house' : 'condo';
+    if (window.confirm(`Clear the current ${label} project cart? Your other property-type cart will be preserved.`)) clearActiveCart();
+  });
+
+  document.getElementById('resetBtn').addEventListener('click',() => {
+    if (window.confirm('Reset everything? This will clear both property-type carts and restore the default house project.')) resetAll();
+  });
+}
+
+renderRooms(mainRooms,'mainRooms');
+renderRooms(basementRooms,'basementRooms');
+attachEvents();
+updateSummary();
+
+window.OSCalculator = {
+  state,calculate,selectService,selectProperty,selectScope,setQuantity,clearActiveCart,resetAll,
+  getActiveCart:() => JSON.parse(JSON.stringify(activeCart()))
+};
 </script>
 </body>
 </html>
