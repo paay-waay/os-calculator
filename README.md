@@ -27,3 +27,7 @@ No build command, package manager, or dependency installation is required.
 - `site.webmanifest` and iOS Home Screen metadata already connected in `index.html`
 
 For GitHub Pages, upload the complete folder contents. The icon will be used when the calculator is added to an iPhone or iPad Home Screen.
+
+## Current icon edition
+
+Flat O/S botanical-shadow icon, including web, PWA, Apple Touch and native iOS sizes.
