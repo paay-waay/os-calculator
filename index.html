@@ -48,13 +48,22 @@
     .choice-grid{display:grid;gap:10px}
     .choice-grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}
     .choice-grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
-    .choice-grid.scope-types{grid-template-columns:repeat(3,minmax(0,1fr))}
     .choice-card{padding:11px 13px;font-weight:850;color:var(--brand);min-height:44px}
     .choice-card:disabled{cursor:not-allowed;opacity:.42;background:#f3f4f5;color:var(--muted);transform:none}
     .section-title{font-size:17px;font-weight:900;margin:4px 0 4px;color:var(--ink)}
     .section-hint{font-size:12px;color:var(--muted);line-height:1.45;margin:0 0 14px}
-    .custom-area{display:none;margin:14px 0 2px}
-    .custom-area.visible{display:grid}
+    .scope-block{display:grid;gap:12px}
+    .scope-heading{font-size:12px;font-weight:850;color:var(--brand);margin:2px 0 0}
+    .template-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+    .template-card{display:flex;align-items:center;justify-content:space-between;gap:14px;border:1px solid var(--line);border-radius:14px;background:#fff;padding:13px 14px;color:var(--brand)}
+    .template-card.active{border-color:var(--brand2);background:#fffaf0;box-shadow:inset 0 0 0 1px var(--brand2)}
+    .template-name{font-weight:900}
+    .template-note{font-size:11px;color:var(--muted);margin-top:3px}
+    .template-add,.additional-toggle{border:0;border-radius:999px;background:var(--brand);color:#fff;font-weight:850;cursor:pointer;padding:8px 13px;white-space:nowrap}
+    .template-card.active .template-add{background:var(--brand2);color:#241a05}
+    .additional-toggle{justify-self:start;background:#edf1f4;color:var(--brand);margin-top:2px}
+    .collapsible{display:none}
+    .collapsible.visible{display:block}
     .room-list{display:grid;gap:10px}
     .room-row{display:grid;grid-template-columns:minmax(0,1fr) 128px;gap:14px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
     .room-row:last-child{border-bottom:0}
@@ -62,6 +71,8 @@
     .room-row.selected .room-name{color:var(--brand)}
     .room-name{font-weight:750}
     .room-note{color:var(--muted);font-size:12px;margin-top:3px;line-height:1.4}
+    .room-copy{appearance:none;border:0;background:transparent;color:inherit;text-align:left;padding:0;cursor:pointer}
+    .room-copy:focus-visible{outline:3px solid rgba(31,58,74,.2);outline-offset:4px;border-radius:4px}
     .counter{display:grid;grid-template-columns:34px 1fr 34px;align-items:center;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:#fff}
     .counter button{height:36px;border:0;background:#f7f8fa;color:var(--brand);font-size:20px;cursor:pointer;font-weight:800}
     .counter button:hover{background:#edf1f4}
@@ -84,7 +95,7 @@
     .btn.primary{background:var(--brand2);color:#241a05}
     .btn.secondary{background:#edf1f4;color:var(--brand)}
     @media(max-width:920px){header{display:block}.pill{display:inline-block;margin-top:16px}.grid{grid-template-columns:1fr}.summary{position:static!important}}
-    @media(max-width:620px){.service-grid,.choice-grid.two,.choice-grid.three,.choice-grid.scope-types{grid-template-columns:1fr}.room-row{grid-template-columns:minmax(0,1fr) 116px}.card-section{padding:18px}.choice-card{text-align:center}}
+    @media(max-width:620px){.service-grid,.choice-grid.two,.choice-grid.three,.template-grid{grid-template-columns:1fr}.room-row{grid-template-columns:minmax(0,1fr) 116px}.card-section{padding:18px}.choice-card{text-align:center}}
     @media print{body{background:#fff}.wrap{max-width:none;padding:0}.grid{display:block}section.card,header .subtitle,.pill,.actions{display:none!important}.summary{position:static!important;box-shadow:none;border:0}.card{box-shadow:none}.estimate-hero{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
   </style>
 </head>
@@ -129,28 +140,31 @@
 
       <div class="card-section">
         <p class="step-label"><span class="step-num">3</span> Project scope</p>
-        <div class="choice-grid scope-types" id="projectTypeGroup" role="group" aria-label="Project scope">
-          <button class="choice-card active" type="button" data-project-type="kitchen" aria-pressed="true">Kitchen</button>
-          <button class="choice-card" type="button" data-project-type="fullbath" aria-pressed="false">Full Bathroom</button>
-          <button class="choice-card" type="button" data-project-type="powder" aria-pressed="false">Powder Room</button>
-          <button class="choice-card" type="button" data-project-type="basement" aria-pressed="false">Full Basement</button>
-          <button class="choice-card" type="button" data-project-type="whole" aria-pressed="false">Whole Home</button>
-          <button class="choice-card" type="button" data-project-type="custom" aria-pressed="false">Custom</button>
-        </div>
-        <div class="context-row custom-area" id="customAreaPanel">
-          <div class="context-label">Project area</div>
-          <div class="choice-grid three" id="projectScopeGroup" role="group" aria-label="Project area">
-            <button class="choice-card active" type="button" data-scope="main" aria-pressed="true">Main home</button>
-            <button class="choice-card" type="button" data-scope="basement" aria-pressed="false">Basement</button>
-            <button class="choice-card" type="button" data-scope="both" aria-pressed="false">Both</button>
-          </div>
-        </div>
-      </div>
+        <div class="scope-block">
+          <div class="scope-heading">Common spaces</div>
+          <div class="room-list" id="commonRooms"></div>
 
-      <div class="card-section" id="mainHomeSection">
-        <div class="section-title">Main Home</div>
-        <p class="section-hint" id="mainSectionHint">Set the number of kitchens in scope.</p>
-        <div class="room-list" id="mainRooms"></div>
+          <button class="additional-toggle" type="button" id="additionalToggle" aria-expanded="false">Show other spaces</button>
+
+          <div class="collapsible" id="additionalSection">
+            <div class="section-title">Other Spaces</div>
+            <p class="section-hint">Add any other main-home spaces in scope.</p>
+            <div class="room-list" id="additionalRooms"></div>
+          </div>
+
+          <div class="scope-heading">Project templates</div>
+          <div class="template-grid">
+            <div class="template-card" id="basementTemplateCard">
+              <div><div class="template-name">Full Basement</div><div class="template-note">Adds a typical basement scope</div></div>
+              <button class="template-add" type="button" data-template="basement" aria-label="Add Full Basement template">Add</button>
+            </div>
+            <div class="template-card" id="wholeTemplateCard">
+              <div><div class="template-name">Whole Home</div><div class="template-note">Adds a typical whole-home scope</div></div>
+              <button class="template-add" type="button" data-template="whole" aria-label="Add Whole Home template">Add</button>
+            </div>
+          </div>
+
+        </div>
       </div>
 
       <div class="card-section" id="basementSection" style="display:none">
@@ -205,7 +219,7 @@ const mainRooms = [
   {id:'dining',label:'Dining Room',note:'Standard dining area',weight:.80,repeatGroup:'dining',repeatProfile:'standard',houseLow:10000,houseHigh:25000,condoLow:4000,condoHigh:10000},
   {id:'family',label:'Family Room',note:'Standard living area',weight:1.00,repeatGroup:'family',repeatProfile:'standard',houseLow:15000,houseHigh:35000,condoLow:5000,condoHigh:15000},
   {id:'bedroom',label:'Bedroom',note:'Standard room',weight:.85,repeatGroup:'bedroom',repeatProfile:'bedroom',houseLow:8000,houseHigh:20000,condoLow:4000,condoHigh:9000},
-  {id:'office',label:'Office / Den',note:'Standard functional area',weight:.90,repeatGroup:'office',repeatProfile:'standard',houseLow:8000,houseHigh:20000,condoLow:5000,condoHigh:12000},
+  {id:'office',label:'Home Office / Den',note:'Standard functional area',weight:.90,repeatGroup:'office',repeatProfile:'standard',houseLow:8000,houseHigh:20000,condoLow:5000,condoHigh:12000},
   {id:'fullbath',label:'Full Bathroom / Ensuite',note:'Technical wet area',weight:1.35,repeatGroup:'fullbath',repeatProfile:'fullbath',houseLow:20000,houseHigh:45000,condoLow:15000,condoHigh:30000},
   {id:'powder',label:'Powder Room',note:'Compact wet area',weight:.85,repeatGroup:'powder',repeatProfile:'standard',houseLow:8000,houseHigh:18000,condoLow:5000,condoHigh:10000},
   {id:'entry',label:'Entry / Foyer',note:'Standard transition area',weight:.65,repeatGroup:'entry',repeatProfile:'standard',houseLow:8000,houseHigh:18000,condoLow:5000,condoHigh:10000},
@@ -222,12 +236,13 @@ const basementRooms = [
   {id:'b_other',label:'Other Room',note:'General finished area',weight:.75,repeatGroup:'other',repeatProfile:'standard',low:8000,high:18000}
 ];
 
-function makeCart(scope='main') { return {scope, qty:{}}; }
+function makeCart(scope='main') {
+  return {scope,qty:{},templates:{basement:false,whole:false},additionalExpanded:false};
+}
 
 const state = {
   service: 'signature',
   propertyType: 'house',
-  projectType: 'kitchen',
   carts: {
     house: makeCart('main'),
     condo: makeCart('main')
@@ -318,7 +333,7 @@ function renderRooms(list,targetId) {
     const row = document.createElement('div');
     row.className = 'room-row';
     row.dataset.id = room.id;
-    row.innerHTML = `<div><div class="room-name">${room.label}</div><div class="room-note">${room.note}</div></div><div class="counter" aria-label="Quantity selector for ${room.label}"><button type="button" data-action="minus" data-id="${room.id}" aria-label="Remove one ${room.label}">−</button><input type="number" min="0" max="20" step="1" inputmode="numeric" value="0" data-id="${room.id}" aria-label="Quantity for ${room.label}" /><button type="button" data-action="plus" data-id="${room.id}" aria-label="Add one ${room.label}">+</button></div>`;
+    row.innerHTML = `<button class="room-copy" type="button" data-add-row="${room.id}" aria-label="Add ${room.label}"><div class="room-name">${room.label}</div><div class="room-note">${room.note}</div></button><div class="counter" aria-label="Quantity selector for ${room.label}"><button type="button" data-action="minus" data-id="${room.id}" aria-label="Remove one ${room.label}">−</button><input type="number" min="0" max="20" step="1" inputmode="numeric" value="0" data-id="${room.id}" aria-label="Quantity for ${room.label}" /><button type="button" data-action="plus" data-id="${room.id}" aria-label="Add one ${room.label}">+</button></div>`;
     target.appendChild(row);
   });
 }
@@ -394,47 +409,25 @@ function syncControls() {
 
   const cart = activeCart();
   if (state.propertyType === 'condo') cart.scope = 'main';
-  if (state.propertyType === 'condo' && state.projectType === 'basement') state.projectType = 'whole';
+  const basementCard = document.getElementById('basementTemplateCard');
+  basementCard.style.display = state.propertyType === 'house' ? 'flex' : 'none';
+  basementCard.classList.toggle('active',cart.templates.basement);
+  document.getElementById('wholeTemplateCard').classList.toggle('active',cart.templates.whole);
 
-  document.querySelectorAll('[data-project-type]').forEach(button => {
-    const isCondoRestricted = state.propertyType === 'condo' && button.dataset.projectType === 'basement';
-    button.disabled = isCondoRestricted;
-    button.setAttribute('aria-disabled',String(isCondoRestricted));
-    const active = button.dataset.projectType === state.projectType;
-    button.classList.toggle('active',active);
+  document.querySelectorAll('[data-template]').forEach(button => {
+    const active = Boolean(cart.templates[button.dataset.template]);
+    button.textContent = active ? 'Added ✓' : 'Add';
     button.setAttribute('aria-pressed',String(active));
   });
 
-  document.querySelectorAll('[data-scope]').forEach(button => {
-    const isCondoRestricted = state.propertyType === 'condo' && button.dataset.scope !== 'main';
-    button.disabled = isCondoRestricted;
-    button.setAttribute('aria-disabled',String(isCondoRestricted));
-    const active = button.dataset.scope === cart.scope;
-    button.classList.toggle('active',active);
-    button.setAttribute('aria-pressed',String(active));
-  });
+  const showAdditional = cart.additionalExpanded;
+  document.getElementById('additionalSection').classList.toggle('visible',showAdditional);
+  const toggle = document.getElementById('additionalToggle');
+  toggle.textContent = showAdditional ? 'Hide other spaces' : 'Show other spaces';
+  toggle.setAttribute('aria-expanded',String(showAdditional));
 
-  document.getElementById('customAreaPanel').classList.toggle('visible',state.projectType === 'custom');
-
-  const showMain = cart.scope === 'main' || cart.scope === 'both';
-  const showBasement = state.propertyType === 'house' && (cart.scope === 'basement' || cart.scope === 'both');
-  document.getElementById('mainHomeSection').style.display = showMain ? 'block' : 'none';
+  const showBasement = state.propertyType === 'house' && cart.templates.basement;
   document.getElementById('basementSection').style.display = showBasement ? 'block' : 'none';
-
-  const focusedRoom = ['kitchen','fullbath','powder'].includes(state.projectType) ? state.projectType : null;
-  document.querySelectorAll('#mainRooms .room-row').forEach(row => {
-    const selected = normalizeQty(cart.qty[row.dataset.id]) > 0;
-    row.style.display = !focusedRoom || row.dataset.id === focusedRoom || selected ? 'grid' : 'none';
-  });
-
-  const hints = {
-    kitchen:'Set the number of kitchens in scope.',
-    fullbath:'Set the number of full bathrooms or ensuites in scope.',
-    powder:'Set the number of powder rooms in scope.',
-    whole:'Set the spaces included in the whole-home renovation.',
-    custom:'Build the scope room by room.'
-  };
-  document.getElementById('mainSectionHint').textContent = hints[state.projectType] || 'Set the spaces included.';
 }
 
 function updateSelectedCards() {
@@ -495,14 +488,6 @@ function selectProperty(propertyType) {
   updateSummary();
 }
 
-function selectProjectType(projectType) {
-  if (state.propertyType === 'condo' && projectType === 'basement') return;
-  state.projectType = projectType;
-  if (projectType === 'basement') activeCart().scope = 'basement';
-  if (['kitchen','fullbath','powder','whole'].includes(projectType)) activeCart().scope = 'main';
-  updateSummary();
-}
-
 function selectScope(scope) {
   if (state.propertyType === 'condo' && scope !== 'main') return;
   activeCart().scope = scope;
@@ -511,18 +496,59 @@ function selectScope(scope) {
 
 function setQuantity(id,value) {
   activeCart().qty[id] = normalizeQty(value);
+  if (normalizeQty(value) > 0) {
+    const isBasement = id.startsWith('b_');
+    if (isBasement && activeCart().scope === 'main') activeCart().scope = 'both';
+    if (!isBasement && activeCart().scope === 'basement') activeCart().scope = 'both';
+  }
+  updateSummary();
+}
+
+const templateDefaults = {
+  basement:{b_rec:1,b_bedroom:1,b_fullbath:1},
+  wholeHouse:{kitchen:1,living:1,dining:1,family:1,bedroom:3,fullbath:2,powder:1,entry:1,laundry:1},
+  wholeCondo:{kitchen:1,living:1,dining:1,bedroom:2,office:1,fullbath:2,powder:1}
+};
+
+function applyTemplate(template) {
+  const cart = activeCart();
+  if (template === 'basement' && state.propertyType !== 'house') return;
+  const defaults = template === 'whole'
+    ? (state.propertyType === 'condo' ? templateDefaults.wholeCondo : templateDefaults.wholeHouse)
+    : templateDefaults[template];
+  if (!defaults) return;
+
+  if (cart.templates[template]) {
+    if (template === 'whole') cart.additionalExpanded = true;
+    updateSummary();
+    return;
+  }
+
+  Object.entries(defaults).forEach(([id,qty]) => {
+    if (normalizeQty(cart.qty[id]) === 0) cart.qty[id] = qty;
+  });
+  cart.templates[template] = true;
+  if (template === 'whole') cart.additionalExpanded = true;
+
+  const hasMain = mainRooms.some(room => normalizeQty(cart.qty[room.id]) > 0);
+  const hasBasement = basementRooms.some(room => normalizeQty(cart.qty[room.id]) > 0);
+  cart.scope = hasMain && hasBasement ? 'both' : hasBasement ? 'basement' : 'main';
+  updateSummary();
+}
+
+function toggleAdditionalSpaces() {
+  activeCart().additionalExpanded = !activeCart().additionalExpanded;
   updateSummary();
 }
 
 function clearActiveCart() {
-  activeCart().qty = {};
+  state.carts[state.propertyType] = makeCart('main');
   updateSummary();
 }
 
 function resetAll() {
   state.service = 'signature';
   state.propertyType = 'house';
-  state.projectType = 'kitchen';
   state.carts.house = makeCart('main');
   state.carts.condo = makeCart('main');
   selectService('signature');
@@ -539,22 +565,25 @@ function attachEvents() {
     if (button) selectProperty(button.dataset.property);
   });
 
-  document.getElementById('projectTypeGroup').addEventListener('click',event => {
-    const button = event.target.closest('[data-project-type]');
-    if (button && !button.disabled) selectProjectType(button.dataset.projectType);
+  document.querySelector('.template-grid').addEventListener('click',event => {
+    const button = event.target.closest('[data-template]');
+    if (button) applyTemplate(button.dataset.template);
   });
 
-  document.getElementById('projectScopeGroup').addEventListener('click',event => {
-    const button = event.target.closest('[data-scope]');
-    if (button && !button.disabled) selectScope(button.dataset.scope);
-  });
+  document.getElementById('additionalToggle').addEventListener('click',toggleAdditionalSpaces);
 
   document.body.addEventListener('click',event => {
     const button = event.target.closest('button[data-action]');
-    if (!button) return;
-    const id = button.dataset.id;
-    const current = normalizeQty(activeCart().qty[id]);
-    setQuantity(id,button.dataset.action === 'plus' ? current+1 : current-1);
+    if (button) {
+      const id = button.dataset.id;
+      const current = normalizeQty(activeCart().qty[id]);
+      setQuantity(id,button.dataset.action === 'plus' ? current+1 : current-1);
+      return;
+    }
+    const rowButton = event.target.closest('[data-add-row]');
+    if (rowButton && normalizeQty(activeCart().qty[rowButton.dataset.addRow]) === 0) {
+      setQuantity(rowButton.dataset.addRow,1);
+    }
   });
 
   document.body.addEventListener('input',event => {
@@ -568,13 +597,14 @@ function attachEvents() {
   });
 }
 
-renderRooms(mainRooms,'mainRooms');
+renderRooms(mainRooms.filter(room => ['kitchen','fullbath','powder','office'].includes(room.id)),'commonRooms');
+renderRooms(mainRooms.filter(room => !['kitchen','fullbath','powder','office'].includes(room.id)),'additionalRooms');
 renderRooms(basementRooms,'basementRooms');
 attachEvents();
 updateSummary();
 
 window.OSCalculator = {
-  state,calculate,selectService,selectProperty,selectProjectType,selectScope,setQuantity,clearActiveCart,resetAll,
+  state,calculate,selectService,selectProperty,selectScope,setQuantity,applyTemplate,clearActiveCart,resetAll,
   getActiveCart:() => JSON.parse(JSON.stringify(activeCart()))
 };
 </script>
