@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>October Six Internal Design Fee Planning Lab</title>
+  <title>October Six Design Fee & Renovation Investment Estimator</title>
   <meta name="theme-color" content="#1f3a4a" />
   <meta name="application-name" content="O/S Calculator" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -48,9 +48,13 @@
     .choice-grid{display:grid;gap:10px}
     .choice-grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}
     .choice-grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .choice-grid.scope-types{grid-template-columns:repeat(3,minmax(0,1fr))}
     .choice-card{padding:11px 13px;font-weight:850;color:var(--brand);min-height:44px}
     .choice-card:disabled{cursor:not-allowed;opacity:.42;background:#f3f4f5;color:var(--muted);transform:none}
-    .section-title{font-size:17px;font-weight:900;margin:4px 0 14px;color:var(--ink)}
+    .section-title{font-size:17px;font-weight:900;margin:4px 0 4px;color:var(--ink)}
+    .section-hint{font-size:12px;color:var(--muted);line-height:1.45;margin:0 0 14px}
+    .custom-area{display:none;margin:14px 0 2px}
+    .custom-area.visible{display:grid}
     .room-list{display:grid;gap:10px}
     .room-row{display:grid;grid-template-columns:minmax(0,1fr) 128px;gap:14px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
     .room-row:last-child{border-bottom:0}
@@ -75,58 +79,13 @@
     .flag{margin-top:12px;padding:12px 14px;border-radius:14px;background:var(--warning);color:#694b12;font-size:13px;line-height:1.45}
     .flag.custom{background:var(--danger);color:#7a2323}
     .footer-note{color:var(--muted);font-size:12px;line-height:1.45;margin-top:16px}
-    .internal-tag{display:inline-flex;align-items:center;gap:7px;margin-top:10px;padding:7px 10px;border-radius:999px;background:rgba(255,255,255,.12);font-size:12px;font-weight:800}
-    .internal-tag::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--brand2)}
-    .learning-card{margin-top:22px;padding:24px}
-    .learning-head{display:flex;justify-content:space-between;gap:18px;align-items:flex-start;margin-bottom:20px}
-    .learning-head h2{margin:0 0 7px;color:var(--brand);font-size:22px}
-    .learning-head p{margin:0;color:var(--muted);line-height:1.55;max-width:760px}
-    .mini-pill{border:1px solid rgba(31,58,74,.14);background:var(--soft);color:var(--brand);border-radius:999px;padding:8px 11px;font-size:12px;font-weight:850;white-space:nowrap}
-    .logic-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:18px}
-    .logic-card{border:1px solid var(--line);border-radius:15px;padding:16px;background:#fff}
-    .logic-card.low{background:#f4f8f6}.logic-card.standard{background:#fffaf0;border-color:rgba(199,168,107,.55)}.logic-card.high{background:#fbf7f2}
-    .logic-kicker{font-size:11px;text-transform:uppercase;letter-spacing:.11em;color:var(--muted);font-weight:850;margin-bottom:7px}
-    .logic-value{font-size:22px;font-weight:950;color:var(--brand);margin-bottom:7px}
-    .logic-card p{font-size:13px;color:var(--muted);line-height:1.5;margin:0}
-    .internal-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:18px 0}
-    .internal-metric{border:1px solid var(--line);border-radius:13px;padding:13px;background:var(--soft)}
-    .internal-metric .label{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:800;margin-bottom:5px}
-    .internal-metric .number{font-size:17px;font-weight:950;color:var(--brand)}
-    details.edu-details{border-top:1px solid var(--line);padding:15px 0}
-    details.edu-details:last-of-type{border-bottom:1px solid var(--line)}
-    details.edu-details summary{cursor:pointer;font-weight:900;color:var(--brand);list-style:none;display:flex;justify-content:space-between;gap:12px}
-    details.edu-details summary::-webkit-details-marker{display:none}
-    details.edu-details summary::after{content:"+";font-size:20px;line-height:1}
-    details.edu-details[open] summary::after{content:"−"}
-    .details-body{padding-top:12px;color:var(--muted);font-size:13px;line-height:1.6}
-    .details-body ul{margin:8px 0 0;padding-left:19px}
-    .details-body li{margin:5px 0}
-    .breakdown-table{width:100%;border-collapse:collapse;margin-top:8px}
-    .breakdown-table th,.breakdown-table td{border-bottom:1px solid var(--line);padding:9px 5px;text-align:left;font-size:12px}
-    .breakdown-table th{color:var(--muted);font-weight:850}
-    .breakdown-table td:last-child,.breakdown-table th:last-child{text-align:right}
-    .quote-lab{margin-top:20px;padding:18px;border-radius:15px;background:var(--soft);border:1px solid var(--line)}
-    .quote-lab h3{margin:0 0 6px;color:var(--brand);font-size:17px}
-    .quote-lab>p{margin:0 0 14px;color:var(--muted);font-size:13px;line-height:1.5}
-    .quote-controls{display:grid;grid-template-columns:minmax(180px,260px) auto;gap:10px;align-items:end}
-    .quote-field label{display:block;font-size:12px;font-weight:850;color:var(--brand);margin-bottom:6px}
-    .quote-field input{width:100%;border:1px solid var(--line);border-radius:12px;padding:11px 12px;background:#fff;font-weight:900;color:var(--ink);outline:none}
-    .quote-field input:focus{border-color:var(--brand2);box-shadow:0 0 0 3px rgba(199,168,107,.15)}
-    .quote-guidance{margin-top:14px;padding:14px;border-radius:13px;background:#fff;border:1px solid var(--line);font-size:13px;line-height:1.55;color:var(--ink)}
-    .quote-guidance strong{color:var(--brand)}
-    .range-track{position:relative;height:14px;border-radius:999px;background:#e8edf0;margin:20px 6px 28px;overflow:visible}
-    .range-fill{position:absolute;inset:0;border-radius:999px;background:linear-gradient(90deg,#dbe8e2,#d7bc82,#eaded2)}
-    .track-marker{position:absolute;top:50%;width:12px;height:12px;border-radius:50%;transform:translate(-50%,-50%);border:2px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.18)}
-    .track-marker.p{background:var(--brand)}.track-marker.quote{background:var(--brand2);width:15px;height:15px}
-    .track-label{position:absolute;top:18px;transform:translateX(-50%);font-size:10px;font-weight:850;color:var(--muted);white-space:nowrap}
-    .education-note{margin-top:16px;padding:14px 16px;border-left:4px solid var(--brand2);background:#fffaf0;color:#5e4a20;font-size:13px;line-height:1.55}
     .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
     .btn{appearance:none;border:0;border-radius:999px;padding:11px 16px;font-weight:900;cursor:pointer}
     .btn.primary{background:var(--brand2);color:#241a05}
     .btn.secondary{background:#edf1f4;color:var(--brand)}
-    @media(max-width:920px){header{display:block}.pill{display:inline-block;margin-top:16px}.grid{grid-template-columns:1fr}.summary{position:static!important}.internal-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}}
-    @media(max-width:620px){.service-grid,.choice-grid.two,.choice-grid.three,.logic-grid,.internal-metrics,.quote-controls{grid-template-columns:1fr}.room-row{grid-template-columns:minmax(0,1fr) 116px}.card-section{padding:18px}.choice-card{text-align:center}.learning-card{padding:18px}.learning-head{display:block}.mini-pill{display:inline-flex;margin-top:12px}}
-    @media print{body{background:#fff}.wrap{max-width:none;padding:0}.grid{display:block}section.card,header .subtitle,.pill,.actions,.learning-card{display:none!important}.summary{position:static!important;box-shadow:none;border:0}.card{box-shadow:none}.estimate-hero{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+    @media(max-width:920px){header{display:block}.pill{display:inline-block;margin-top:16px}.grid{grid-template-columns:1fr}.summary{position:static!important}}
+    @media(max-width:620px){.service-grid,.choice-grid.two,.choice-grid.three,.choice-grid.scope-types{grid-template-columns:1fr}.room-row{grid-template-columns:minmax(0,1fr) 116px}.card-section{padding:18px}.choice-card{text-align:center}}
+    @media print{body{background:#fff}.wrap{max-width:none;padding:0}.grid{display:block}section.card,header .subtitle,.pill,.actions{display:none!important}.summary{position:static!important;box-shadow:none;border:0}.card{box-shadow:none}.estimate-hero{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
   </style>
 </head>
 <body>
@@ -134,10 +93,10 @@
   <header>
     <div>
       <div class="brand-kicker">October Six</div>
-      <h1>Internal Design Fee Planning Lab</h1>
-      <p class="subtitle">Build a preliminary scope, review the internally calculated standard price (P), and study the wider client-facing planning range. This version is designed to teach consistent pricing decisions before a written proposal is prepared.</p>
+      <h1>Project Investment Calculator</h1>
+      <p class="subtitle">Select the service, property and spaces in scope.</p>
     </div>
-    <div class="pill">Internal use · pricing education</div>
+    <div class="pill">Preliminary estimate only</div>
   </header>
 
   <main class="grid">
@@ -157,151 +116,70 @@
       </div>
 
       <div class="card-section">
-        <p class="step-label"><span class="step-num">2</span> Project context</p>
+        <p class="step-label"><span class="step-num">2</span> Property</p>
         <div class="context-panel">
           <div class="context-row">
-            <div class="context-label">Property type</div>
             <div class="choice-grid two" id="propertyTypeGroup" role="group" aria-label="Property type">
-              <button class="choice-card active" type="button" data-property="house" aria-pressed="true">House / freehold</button>
-              <button class="choice-card" type="button" data-property="condo" aria-pressed="false">Condo / apartment</button>
-            </div>
-          </div>
-          <div class="context-row">
-            <div class="context-label">Project area</div>
-            <div class="choice-grid three" id="projectScopeGroup" role="group" aria-label="Project area">
-              <button class="choice-card active" type="button" data-scope="main" aria-pressed="true">Main home</button>
-              <button class="choice-card" type="button" data-scope="basement" aria-pressed="false">Basement</button>
-              <button class="choice-card" type="button" data-scope="both" aria-pressed="false">Main home + basement</button>
+              <button class="choice-card active" type="button" data-property="house" aria-pressed="true">House</button>
+              <button class="choice-card" type="button" data-property="condo" aria-pressed="false">Condo</button>
             </div>
           </div>
         </div>
       </div>
 
+      <div class="card-section">
+        <p class="step-label"><span class="step-num">3</span> Project scope</p>
+        <div class="choice-grid scope-types" id="projectTypeGroup" role="group" aria-label="Project scope">
+          <button class="choice-card active" type="button" data-project-type="kitchen" aria-pressed="true">Kitchen</button>
+          <button class="choice-card" type="button" data-project-type="fullbath" aria-pressed="false">Full Bathroom</button>
+          <button class="choice-card" type="button" data-project-type="powder" aria-pressed="false">Powder Room</button>
+          <button class="choice-card" type="button" data-project-type="basement" aria-pressed="false">Full Basement</button>
+          <button class="choice-card" type="button" data-project-type="whole" aria-pressed="false">Whole Home</button>
+          <button class="choice-card" type="button" data-project-type="custom" aria-pressed="false">Custom</button>
+        </div>
+        <div class="context-row custom-area" id="customAreaPanel">
+          <div class="context-label">Project area</div>
+          <div class="choice-grid three" id="projectScopeGroup" role="group" aria-label="Project area">
+            <button class="choice-card active" type="button" data-scope="main" aria-pressed="true">Main home</button>
+            <button class="choice-card" type="button" data-scope="basement" aria-pressed="false">Basement</button>
+            <button class="choice-card" type="button" data-scope="both" aria-pressed="false">Both</button>
+          </div>
+        </div>
+      </div>
+
       <div class="card-section" id="mainHomeSection">
-        <p class="step-label"><span class="step-num">3</span> Add project areas</p>
         <div class="section-title">Main Home</div>
+        <p class="section-hint" id="mainSectionHint">Set the number of kitchens in scope.</p>
         <div class="room-list" id="mainRooms"></div>
       </div>
 
       <div class="card-section" id="basementSection" style="display:none">
         <div class="section-title">Basement</div>
+        <p class="section-hint">Set the spaces included in the basement renovation.</p>
         <div class="room-list" id="basementRooms"></div>
       </div>
     </section>
 
     <aside class="card summary">
       <div class="estimate-hero">
-        <div class="small">Client-facing planning range</div>
+        <div class="small">Estimated design fee</div>
         <div class="fee" id="designFee">$0 CAD</div>
-        <div class="internal-tag">Internal standard price P: <span id="heroP">$0 CAD</span></div>
       </div>
       <div class="summary-body">
         <div class="metric"><div class="key">Selected service</div><div class="value" id="serviceLabel">Signature Design</div></div>
         <div class="metric"><div class="key">Areas selected</div><div class="value" id="areasSelected">0</div></div>
-        <div class="metric"><div class="key">Weighted scope points · internal</div><div class="value" id="scopePoints">0.00</div></div>
-        <div class="metric"><div class="key">Internal standard price P</div><div class="value" id="internalP">$0 CAD</div></div>
-        <div class="metric"><div class="key">Client planning-range rule</div><div class="value" id="rangeRule">N/A</div></div>
-        <div class="metric"><div class="key">Suggested total project investment</div><div class="value" id="renoBudget">$0 CAD</div></div>
-        <div class="metric"><div class="key">Planning-range fee share</div><div class="value" id="feeShare">N/A</div></div>
+        <div class="metric"><div class="key">Recommended project investment range</div><div class="value" id="renoBudget">$0 CAD</div></div>
+        <div class="metric"><div class="key">Design fee as share of total budget</div><div class="value" id="feeShare">N/A</div></div>
         <div class="scope" id="scopeBox"><strong>Selected scope</strong>No rooms selected yet.</div>
-        <div class="flag" id="noteBox">Select rooms using the plus and minus controls. Your house and condo selections are stored in separate carts while you compare project types.</div>
+        <div class="flag" id="noteBox">Add the spaces included in the project.</div>
         <div class="actions">
-          <button class="btn primary" type="button" onclick="window.print()">Print planning summary</button>
-          <button class="btn secondary" type="button" id="clearCartBtn">Clear cart</button>
-          <button class="btn secondary" type="button" id="resetBtn">Reset all</button>
+          <button class="btn primary" type="button" onclick="window.print()">Save / Print</button>
+          <button class="btn secondary" type="button" id="resetBtn">Start over</button>
         </div>
-        <p class="footer-note">Internal use: P is the expected standard fee for the selected mix of spaces. The wider planning range is the number a prospective client may see before drawings, site conditions, deliverables and revision needs are reviewed. A written proposal replaces this planning range.</p>
+        <p class="footer-note">This tool provides a preliminary planning estimate, not a quotation. Total project investment includes the displayed design fee and a planning allowance for implementation. Final fees and costs depend on confirmed scope, site conditions and selections.</p>
       </div>
     </aside>
   </main>
-
-  <section class="card learning-card" aria-labelledby="learningTitle">
-    <div class="learning-head">
-      <div>
-        <h2 id="learningTitle">How to use the pricing range internally</h2>
-        <p>The calculator now separates the internal standard price from the client-facing planning range. The range is not a menu of interchangeable prices. Its position depends on the confirmed amount of design development required.</p>
-      </div>
-      <div class="mini-pill">P → planning range → fixed quote</div>
-    </div>
-
-    <div class="logic-grid">
-      <div class="logic-card low">
-        <div class="logic-kicker">Lower end</div>
-        <div class="logic-value" id="eduLow">$0</div>
-        <p>Represents a genuinely executable, standardized condition: reliable drawings, conventional geometry, limited custom detailing, coordinated materials and the standard deliverable allowance.</p>
-      </div>
-      <div class="logic-card standard">
-        <div class="logic-kicker">Internal standard price P</div>
-        <div class="logic-value" id="eduP">$0</div>
-        <p>The main internal pricing anchor. It represents the expected fixed fee for the selected room mix under normal project conditions—not a promised client price.</p>
-      </div>
-      <div class="logic-card high">
-        <div class="logic-kicker">Upper end</div>
-        <div class="logic-value" id="eduHigh">$0</div>
-        <p>Covers common additional development such as more layout studies, custom millwork, extra elevations or visualizations, incomplete base information and more involved revisions.</p>
-      </div>
-    </div>
-
-    <div class="internal-metrics">
-      <div class="internal-metric"><div class="label">Actual areas</div><div class="number" id="eduAreas">0</div></div>
-      <div class="internal-metric"><div class="label">Scope points</div><div class="number" id="eduPoints">0.00</div></div>
-      <div class="internal-metric"><div class="label">Range width</div><div class="number" id="eduWidth">$0</div></div>
-      <div class="internal-metric"><div class="label">Range profile</div><div class="number" id="eduProfile">N/A</div></div>
-    </div>
-
-    <details class="edu-details" open>
-      <summary>What must be true for the lower end to be defensible?</summary>
-      <div class="details-body">
-        <ul>
-          <li>Reliable existing plans, measurements or site information are available.</li>
-          <li>Room geometry and site conditions are conventional, with limited exploratory layout work.</li>
-          <li>Major plumbing and electrical locations are retained or require only limited development.</li>
-          <li>Custom cabinetry, millwork, bespoke details and independent room concepts remain limited.</li>
-          <li>A coordinated material language can be carried across the selected spaces.</li>
-          <li>The project remains within the standard drawing, visualization and revision allowance.</li>
-        </ul>
-      </div>
-    </details>
-
-    <details class="edu-details">
-      <summary>What normally moves a proposal above P?</summary>
-      <div class="details-body">
-        <ul>
-          <li>Multiple viable layout directions must be developed and compared.</li>
-          <li>Kitchen, bathroom, lighting or electrical layouts require substantial reconfiguration.</li>
-          <li>Custom millwork, feature walls, fireplaces or detailed built-ins require additional elevations.</li>
-          <li>Existing drawings are incomplete and base information must be reconstructed.</li>
-          <li>Different rooms require substantially independent palettes, specifications or visualizations.</li>
-          <li>Decision-making, stakeholder coordination or anticipated revisions are more involved than standard.</li>
-        </ul>
-      </div>
-    </details>
-
-    <details class="edu-details">
-      <summary>Internal weighting breakdown</summary>
-      <div class="details-body" id="weightBreakdown">Select project areas to view the weighted calculation.</div>
-    </details>
-
-    <div class="quote-lab">
-      <h3>Test a proposed fixed quote</h3>
-      <p>Enter a possible proposal amount. The tool will show where it sits relative to the public planning range and P. This is an internal explanation aid, not an automatic quote approval.</p>
-      <div class="quote-controls">
-        <div class="quote-field">
-          <label for="proposedQuote">Proposed fixed design fee</label>
-          <input id="proposedQuote" type="number" min="0" step="100" inputmode="decimal" placeholder="Enter amount" />
-        </div>
-        <button class="btn secondary" type="button" id="usePBtn">Use internal P</button>
-      </div>
-      <div class="range-track" aria-hidden="true">
-        <div class="range-fill"></div>
-        <span class="track-marker p" id="pMarker"></span><span class="track-label" id="pLabel">P</span>
-        <span class="track-marker quote" id="quoteMarker"></span><span class="track-label" id="quoteLabel">Quote</span>
-      </div>
-      <div class="quote-guidance" id="quoteGuidance"><strong>No scope selected.</strong> Build a project scope to test a proposal.</div>
-    </div>
-
-    <div class="education-note"><strong>Pricing discipline:</strong> do not describe the difference between the range minimum and the final quote as an added surcharge. Explain the conditions represented by the lower end, identify the confirmed scope factors, and state why the project sits at a particular position within the original planning range. Reaching the lower end should correspond to genuine scope standardization or reduction.</div>
-  </section>
 </div>
 
 <script>
@@ -311,13 +189,7 @@ const pricing = {
   signatureCurve: {1:1800,2:3000,3:4100,4:5000,5:5800,6:6500},
   investmentEnvelope: {condo:{low:.9,high:1},house:{low:.95,high:1.1}},
   maxDesignShare: .20,
-  clientRangeProfiles: {
-    compact: {low:.90,high:1.10,minWidth:1000,label:'1–2 areas'},
-    standard: {low:.88,high:1.15,minWidth:1500,label:'3–6 areas'},
-    wholeHome: {low:.85,high:1.20,minWidth:2500,label:'7–10 areas'},
-    largeStandard: {low:.83,high:1.25,minWidth:3500,label:'11+ standard areas'},
-    custom: {low:.80,high:1.30,minWidth:4000,label:'Custom scope'}
-  }
+  highScopeAllowance: 1.08
 };
 
 const repeatProfiles = {
@@ -328,26 +200,26 @@ const repeatProfiles = {
 };
 
 const mainRooms = [
-  {id:'kitchen',label:'Kitchen',note:'High-detail technical area with cabinetry, appliance, lighting and material coordination.',weight:1.60,repeatGroup:'kitchen',repeatProfile:'kitchen',houseLow:45000,houseHigh:90000,condoLow:25000,condoHigh:50000},
-  {id:'living',label:'Living Room',note:'Primary shared living area.',weight:1.00,repeatGroup:'living',repeatProfile:'standard',houseLow:15000,houseHigh:35000,condoLow:5000,condoHigh:12000},
-  {id:'dining',label:'Dining Room',note:'Dining layout, lighting and finish coordination.',weight:.80,repeatGroup:'dining',repeatProfile:'standard',houseLow:10000,houseHigh:25000,condoLow:4000,condoHigh:10000},
-  {id:'family',label:'Family Room',note:'Independent shared living or media area.',weight:1.00,repeatGroup:'family',repeatProfile:'standard',houseLow:15000,houseHigh:35000,condoLow:5000,condoHigh:15000},
-  {id:'bedroom',label:'Bedroom',note:'Primary, guest, nursery or standard bedroom; each room remains individually planned.',weight:.85,repeatGroup:'bedroom',repeatProfile:'bedroom',houseLow:8000,houseHigh:20000,condoLow:4000,condoHigh:9000},
-  {id:'office',label:'Office / Den',note:'Functional planning, task lighting, storage and furniture coordination.',weight:.90,repeatGroup:'office',repeatProfile:'standard',houseLow:8000,houseHigh:20000,condoLow:5000,condoHigh:12000},
-  {id:'fullbath',label:'Full Bathroom / Ensuite',note:'Technical wet area with fixture, lighting, tile and elevation development.',weight:1.35,repeatGroup:'fullbath',repeatProfile:'fullbath',houseLow:20000,houseHigh:45000,condoLow:15000,condoHigh:30000},
-  {id:'powder',label:'Powder Room',note:'Compact area with concentrated finish and fixture decisions.',weight:.85,repeatGroup:'powder',repeatProfile:'standard',houseLow:8000,houseHigh:18000,condoLow:5000,condoHigh:10000},
-  {id:'entry',label:'Entry / Foyer',note:'Arrival, circulation, lighting and storage coordination.',weight:.65,repeatGroup:'entry',repeatProfile:'standard',houseLow:8000,houseHigh:18000,condoLow:5000,condoHigh:10000},
-  {id:'laundry',label:'Laundry / Mudroom',note:'Functional area with appliance, storage and utility coordination.',weight:1.05,repeatGroup:'laundry',repeatProfile:'standard',houseLow:15000,houseHigh:35000,condoLow:8000,condoHigh:20000}
+  {id:'kitchen',label:'Kitchen',note:'Technical / high detail',weight:1.60,repeatGroup:'kitchen',repeatProfile:'kitchen',houseLow:45000,houseHigh:90000,condoLow:25000,condoHigh:50000},
+  {id:'living',label:'Living Room',note:'Standard living area',weight:1.00,repeatGroup:'living',repeatProfile:'standard',houseLow:15000,houseHigh:35000,condoLow:5000,condoHigh:12000},
+  {id:'dining',label:'Dining Room',note:'Standard dining area',weight:.80,repeatGroup:'dining',repeatProfile:'standard',houseLow:10000,houseHigh:25000,condoLow:4000,condoHigh:10000},
+  {id:'family',label:'Family Room',note:'Standard living area',weight:1.00,repeatGroup:'family',repeatProfile:'standard',houseLow:15000,houseHigh:35000,condoLow:5000,condoHigh:15000},
+  {id:'bedroom',label:'Bedroom',note:'Standard room',weight:.85,repeatGroup:'bedroom',repeatProfile:'bedroom',houseLow:8000,houseHigh:20000,condoLow:4000,condoHigh:9000},
+  {id:'office',label:'Office / Den',note:'Standard functional area',weight:.90,repeatGroup:'office',repeatProfile:'standard',houseLow:8000,houseHigh:20000,condoLow:5000,condoHigh:12000},
+  {id:'fullbath',label:'Full Bathroom / Ensuite',note:'Technical wet area',weight:1.35,repeatGroup:'fullbath',repeatProfile:'fullbath',houseLow:20000,houseHigh:45000,condoLow:15000,condoHigh:30000},
+  {id:'powder',label:'Powder Room',note:'Compact wet area',weight:.85,repeatGroup:'powder',repeatProfile:'standard',houseLow:8000,houseHigh:18000,condoLow:5000,condoHigh:10000},
+  {id:'entry',label:'Entry / Foyer',note:'Standard transition area',weight:.65,repeatGroup:'entry',repeatProfile:'standard',houseLow:8000,houseHigh:18000,condoLow:5000,condoHigh:10000},
+  {id:'laundry',label:'Laundry / Mudroom',note:'Technical utility area',weight:1.05,repeatGroup:'laundry',repeatProfile:'standard',houseLow:15000,houseHigh:35000,condoLow:8000,condoHigh:20000}
 ];
 
 const basementRooms = [
-  {id:'b_rec',label:'Recreation / Family Room',note:'Primary basement living or recreation area.',weight:1.00,repeatGroup:'b_rec',repeatProfile:'standard',low:20000,high:45000},
-  {id:'b_bedroom',label:'Basement Bedroom',note:'Each bedroom remains individually planned for layout, lighting and use.',weight:.85,repeatGroup:'bedroom',repeatProfile:'bedroom',low:10000,high:20000},
-  {id:'b_office',label:'Office / Gym',note:'Flexible room with functional, lighting and equipment planning.',weight:.90,repeatGroup:'office',repeatProfile:'standard',low:8000,high:18000},
-  {id:'b_fullbath',label:'Basement Full Bathroom / Ensuite',note:'Technical wet area with fixture, lighting, tile and elevation development.',weight:1.35,repeatGroup:'fullbath',repeatProfile:'fullbath',low:20000,high:40000},
-  {id:'b_powder',label:'Powder Room',note:'Compact area with concentrated finish and fixture decisions.',weight:.85,repeatGroup:'powder',repeatProfile:'standard',low:8000,high:15000},
-  {id:'b_wetbar',label:'Kitchenette / Wet Bar',note:'Cabinetry, appliance, plumbing, lighting and material coordination.',weight:1.25,repeatGroup:'wetbar',repeatProfile:'kitchen',low:15000,high:35000},
-  {id:'b_other',label:'Other Room',note:'General finished-room planning allowance.',weight:.75,repeatGroup:'other',repeatProfile:'standard',low:8000,high:18000}
+  {id:'b_rec',label:'Recreation / Family Room',note:'Standard living area',weight:1.00,repeatGroup:'b_rec',repeatProfile:'standard',low:20000,high:45000},
+  {id:'b_bedroom',label:'Basement Bedroom',note:'Standard room',weight:.85,repeatGroup:'bedroom',repeatProfile:'bedroom',low:10000,high:20000},
+  {id:'b_office',label:'Office / Gym',note:'Standard flexible area',weight:.90,repeatGroup:'office',repeatProfile:'standard',low:8000,high:18000},
+  {id:'b_fullbath',label:'Basement Full Bathroom / Ensuite',note:'Technical wet area',weight:1.35,repeatGroup:'fullbath',repeatProfile:'fullbath',low:20000,high:40000},
+  {id:'b_powder',label:'Powder Room',note:'Compact wet area',weight:.85,repeatGroup:'powder',repeatProfile:'standard',low:8000,high:15000},
+  {id:'b_wetbar',label:'Kitchenette / Wet Bar',note:'Technical cabinetry area',weight:1.25,repeatGroup:'wetbar',repeatProfile:'kitchen',low:15000,high:35000},
+  {id:'b_other',label:'Other Room',note:'General finished area',weight:.75,repeatGroup:'other',repeatProfile:'standard',low:8000,high:18000}
 ];
 
 function makeCart(scope='main') { return {scope, qty:{}}; }
@@ -355,6 +227,7 @@ function makeCart(scope='main') { return {scope, qty:{}}; }
 const state = {
   service: 'signature',
   propertyType: 'house',
+  projectType: 'kitchen',
   carts: {
     house: makeCart('main'),
     condo: makeCart('main')
@@ -404,56 +277,16 @@ function getIncludedRooms(propertyType=state.propertyType, scope=activeCart().sc
 
 function calculateScopePoints(rooms, cart) {
   const groupCounts = {};
-  const breakdown = [];
   let points = 0;
   for (const room of rooms) {
     const qty = normalizeQty(cart.qty[room.id]);
     for (let i=0;i<qty;i++) {
       const ordinal = (groupCounts[room.repeatGroup] || 0) + 1;
       groupCounts[room.repeatGroup] = ordinal;
-      const factor = repeatFactor(room.repeatProfile,ordinal);
-      const contribution = room.weight * factor;
-      points += contribution;
-      breakdown.push({
-        label: qty > 1 ? `${room.label} ${i+1}` : room.label,
-        baseWeight: room.weight,
-        repeatFactor: factor,
-        contribution,
-        ordinal
-      });
+      points += room.weight * repeatFactor(room.repeatProfile,ordinal);
     }
   }
-  return {points,groupCounts,breakdown};
-}
-
-function roundDownFiveHundred(value) {
-  if (!isFinite(value) || value <= 0) return 0;
-  return Math.max(500,Math.floor(value/500)*500);
-}
-
-function roundUpFiveHundred(value) {
-  if (!isFinite(value) || value <= 0) return 0;
-  return Math.ceil(value/500)*500;
-}
-
-function getClientRangeProfile(areaCount,custom) {
-  if (custom) return pricing.clientRangeProfiles.custom;
-  if (areaCount <= 2) return pricing.clientRangeProfiles.compact;
-  if (areaCount <= 6) return pricing.clientRangeProfiles.standard;
-  if (areaCount <= 10) return pricing.clientRangeProfiles.wholeHome;
-  return pricing.clientRangeProfiles.largeStandard;
-}
-
-function buildClientPlanningRange(internalP,areaCount,custom,service) {
-  if (internalP <= 0) return {low:0,high:0,profile:null,customPlus:false};
-  if (service === 'direction') {
-    return {low:internalP,high:internalP,profile:{label:'Published flat fee',low:1,high:1,minWidth:0},customPlus:false};
-  }
-  const profile = getClientRangeProfile(areaCount,custom);
-  const low = roundDownFiveHundred(internalP * profile.low);
-  let high = roundUpFiveHundred(internalP * profile.high);
-  if (high - low < profile.minWidth) high = low + profile.minWidth;
-  return {low,high,profile,customPlus:custom};
+  return {points,groupCounts};
 }
 
 function customScopeAssessment({propertyType,scope,areaCount,scopePoints,groupCounts}) {
@@ -517,29 +350,30 @@ function calculate() {
     selected.push(`${qty} ${room.label}`);
   });
 
-  const {points:scopePoints,groupCounts,breakdown} = calculateScopePoints(includedRooms,cart);
-  const customAssessment = customScopeAssessment({propertyType,scope:projectScope,areaCount,scopePoints,groupCounts});
-  let internalP = 0;
+  const {points:scopePoints,groupCounts} = calculateScopePoints(includedRooms,cart);
+  let designLow = 0;
+  let designHigh = 0;
 
   if (state.service === 'direction') {
-    internalP = directionFee(areaCount);
+    designLow = directionFee(areaCount);
+    designHigh = designLow;
   } else if (areaCount > 0) {
-    internalP = roundHundred(signatureFeeRaw(scopePoints));
+    designLow = roundHundred(signatureFeeRaw(scopePoints));
+    const highFromScope = roundHundred(signatureFeeRaw(scopePoints * pricing.highScopeAllowance));
+    designHigh = Math.max(designLow + 200,highFromScope);
   }
 
-  const clientRange = buildClientPlanningRange(internalP,areaCount,customAssessment.custom,state.service);
-  const rawTotalLow = implementationLow + clientRange.low;
-  const rawTotalHigh = implementationHigh + clientRange.high;
-  const shareFloor = clientRange.high > 0 ? clientRange.high / pricing.maxDesignShare : 0;
+  const rawTotalLow = implementationLow + designLow;
+  const rawTotalHigh = implementationHigh + designHigh;
+  const shareFloor = designHigh > 0 ? designHigh / pricing.maxDesignShare : 0;
   const totalLow = areaCount > 0 ? Math.max(rawTotalLow,shareFloor) : 0;
   const totalHigh = areaCount > 0 ? Math.max(rawTotalHigh,shareFloor,totalLow) : 0;
   const budgetAdjusted = totalLow > rawTotalLow + 1 || totalHigh > rawTotalHigh + 1;
+  const customAssessment = customScopeAssessment({propertyType,scope:projectScope,areaCount,scopePoints,groupCounts});
 
   return {
-    propertyType,projectScope,areaCount,scopePoints,groupCounts,breakdown,
-    internalP,clientLow:clientRange.low,clientHigh:clientRange.high,
-    rangeProfile:clientRange.profile,customPlus:clientRange.customPlus,
-    totalLow,totalHigh,selected,budgetAdjusted,
+    propertyType,projectScope,areaCount,scopePoints,groupCounts,
+    designLow,designHigh,totalLow,totalHigh,selected,budgetAdjusted,
     custom:customAssessment.custom,customReasons:customAssessment.reasons
   };
 }
@@ -560,6 +394,17 @@ function syncControls() {
 
   const cart = activeCart();
   if (state.propertyType === 'condo') cart.scope = 'main';
+  if (state.propertyType === 'condo' && state.projectType === 'basement') state.projectType = 'whole';
+
+  document.querySelectorAll('[data-project-type]').forEach(button => {
+    const isCondoRestricted = state.propertyType === 'condo' && button.dataset.projectType === 'basement';
+    button.disabled = isCondoRestricted;
+    button.setAttribute('aria-disabled',String(isCondoRestricted));
+    const active = button.dataset.projectType === state.projectType;
+    button.classList.toggle('active',active);
+    button.setAttribute('aria-pressed',String(active));
+  });
+
   document.querySelectorAll('[data-scope]').forEach(button => {
     const isCondoRestricted = state.propertyType === 'condo' && button.dataset.scope !== 'main';
     button.disabled = isCondoRestricted;
@@ -569,10 +414,27 @@ function syncControls() {
     button.setAttribute('aria-pressed',String(active));
   });
 
+  document.getElementById('customAreaPanel').classList.toggle('visible',state.projectType === 'custom');
+
   const showMain = cart.scope === 'main' || cart.scope === 'both';
   const showBasement = state.propertyType === 'house' && (cart.scope === 'basement' || cart.scope === 'both');
   document.getElementById('mainHomeSection').style.display = showMain ? 'block' : 'none';
   document.getElementById('basementSection').style.display = showBasement ? 'block' : 'none';
+
+  const focusedRoom = ['kitchen','fullbath','powder'].includes(state.projectType) ? state.projectType : null;
+  document.querySelectorAll('#mainRooms .room-row').forEach(row => {
+    const selected = normalizeQty(cart.qty[row.dataset.id]) > 0;
+    row.style.display = !focusedRoom || row.dataset.id === focusedRoom || selected ? 'grid' : 'none';
+  });
+
+  const hints = {
+    kitchen:'Set the number of kitchens in scope.',
+    fullbath:'Set the number of full bathrooms or ensuites in scope.',
+    powder:'Set the number of powder rooms in scope.',
+    whole:'Set the spaces included in the whole-home renovation.',
+    custom:'Build the scope room by room.'
+  };
+  document.getElementById('mainSectionHint').textContent = hints[state.projectType] || 'Set the spaces included.';
 }
 
 function updateSelectedCards() {
@@ -582,85 +444,6 @@ function updateSelectedCards() {
   });
 }
 
-function formatClientRange(result) {
-  if (result.areaCount <= 0) return '$0 CAD';
-  if (result.clientLow === result.clientHigh) return money(result.clientLow);
-  const suffix = result.customPlus ? '+ CAD' : 'CAD';
-  return `${money(result.clientLow).replace(' CAD','')} – ${money(result.clientHigh).replace(' CAD','')}${result.customPlus ? '+' : ''} CAD`;
-}
-
-function rangeRuleText(result) {
-  if (!result.rangeProfile) return 'N/A';
-  if (state.service === 'direction') return 'Published flat fee';
-  return `${result.rangeProfile.label}: ${Math.round(result.rangeProfile.low*100)}%–${Math.round(result.rangeProfile.high*100)}% of P`;
-}
-
-function renderWeightBreakdown(result) {
-  const target = document.getElementById('weightBreakdown');
-  if (!result.breakdown.length) {
-    target.textContent = 'Select project areas to view the weighted calculation.';
-    return;
-  }
-  const rows = result.breakdown.map(item => `<tr><td>${item.label}</td><td>${item.baseWeight.toFixed(2)}</td><td>${Math.round(item.repeatFactor*100)}%</td><td>${item.contribution.toFixed(3)}</td></tr>`).join('');
-  target.innerHTML = `<table class="breakdown-table"><thead><tr><th>Space instance</th><th>Base weight</th><th>Repeat factor</th><th>Points</th></tr></thead><tbody>${rows}</tbody><tfoot><tr><th colspan="3">Total weighted scope</th><th>${result.scopePoints.toFixed(3)}</th></tr></tfoot></table><p>Repeated-room adjustments recognize transferable design language without removing the independent layout, lighting, electrical, functional and documentation work required for each room.</p>`;
-}
-
-function positionPercent(value,low,high) {
-  if (!isFinite(value) || high <= low) return 50;
-  return Math.max(0,Math.min(100,((value-low)/(high-low))*100));
-}
-
-function updateQuoteLab(result,forceP=false) {
-  const input = document.getElementById('proposedQuote');
-  if (forceP || !input.dataset.edited) input.value = result.internalP > 0 ? result.internalP : '';
-  const quote = Number(input.value) || 0;
-  const pPosition = positionPercent(result.internalP,result.clientLow,result.clientHigh);
-  const quotePosition = positionPercent(quote,result.clientLow,result.clientHigh);
-  document.getElementById('pMarker').style.left = `${pPosition}%`;
-  document.getElementById('pLabel').style.left = `${pPosition}%`;
-  document.getElementById('quoteMarker').style.left = `${quotePosition}%`;
-  document.getElementById('quoteLabel').style.left = `${quotePosition}%`;
-
-  const guidance = document.getElementById('quoteGuidance');
-  if (result.areaCount <= 0 || result.internalP <= 0) {
-    guidance.innerHTML = '<strong>No scope selected.</strong> Build a project scope to test a proposal.';
-    return;
-  }
-  if (quote <= 0) {
-    guidance.innerHTML = `<strong>Enter a proposed fixed fee.</strong> The current public planning range is ${formatClientRange(result)} and internal P is ${money(result.internalP)}.`;
-    return;
-  }
-
-  const deltaFromLow = quote - result.clientLow;
-  const deltaFromP = quote - result.internalP;
-  let positionLabel = '';
-  let explanation = '';
-  if (quote < result.clientLow) {
-    positionLabel = 'below the published planning range';
-    explanation = 'Only use this amount when the scope has been genuinely reduced or standardized and profitability remains protected. Do not present the same deliverables at a discount without documenting what changed.';
-  } else if (quote > result.clientHigh) {
-    positionLabel = 'above the published planning range';
-    explanation = 'Before presenting it, document the exceptional scope factors or revise the public planning range. A quote above the original anchor requires a specific, observable explanation.';
-  } else if (quote <= result.internalP * .95) {
-    positionLabel = 'near the lower end of the planning range';
-    explanation = 'Confirm that lower-end conditions are genuinely present: reliable base information, conventional geometry, limited custom development, coordinated materials and standard deliverables.';
-  } else if (quote <= result.internalP * 1.08) {
-    positionLabel = 'around the internal standard price P';
-    explanation = 'This is the normal expected position after scope review. Explain the final fee as the confirmed position within the range, not as an added charge above the minimum.';
-  } else {
-    positionLabel = 'in the upper portion of the planning range';
-    explanation = 'Identify the confirmed drivers, such as additional layout studies, reconfigured technical systems, custom millwork, extra elevations or visualizations, incomplete base information or more involved revisions.';
-  }
-
-  const lowDifferenceText = deltaFromLow >= 0
-    ? `${money(deltaFromLow)} above the range minimum`
-    : `${money(Math.abs(deltaFromLow))} below the range minimum`;
-  const pDifferenceText = deltaFromP === 0
-    ? 'equal to P'
-    : `${money(Math.abs(deltaFromP))} ${deltaFromP > 0 ? 'above' : 'below'} P`;
-  guidance.innerHTML = `<strong>${money(quote)} sits ${positionLabel}.</strong> It is ${lowDifferenceText} and ${pDifferenceText}. ${explanation}<br><br><strong>Client explanation structure:</strong> confirm the original planning range; define the assumptions represented by its lower end; identify only the scope factors that are actually present; then state why the fixed fee occupies this position within the range.`;
-}
-
 function updateSummary() {
   syncControls();
   syncInputsFromCart();
@@ -668,43 +451,31 @@ function updateSummary() {
   const result = calculate();
   document.getElementById('serviceLabel').textContent = state.service === 'signature' ? 'Signature Design' : 'Design Direction';
   document.getElementById('areasSelected').textContent = result.areaCount;
-  document.getElementById('scopePoints').textContent = result.scopePoints.toFixed(2);
-  document.getElementById('internalP').textContent = money(result.internalP);
-  document.getElementById('heroP').textContent = money(result.internalP);
-  document.getElementById('rangeRule').textContent = rangeRuleText(result);
-  document.getElementById('designFee').textContent = formatClientRange(result);
+  document.getElementById('designFee').textContent = result.areaCount > 0
+    ? (result.designLow === result.designHigh ? money(result.designLow) : `${money(result.designLow).replace(' CAD','')} – ${money(result.designHigh)}`)
+    : '$0 CAD';
   document.getElementById('renoBudget').textContent = result.areaCount > 0
     ? (result.totalLow === result.totalHigh ? money(result.totalLow) : `${money(result.totalLow).replace(' CAD','')} – ${money(result.totalHigh)}`)
     : '$0 CAD';
   document.getElementById('feeShare').textContent = result.totalLow > 0 && result.totalHigh > 0
-    ? `${pct(result.clientLow/result.totalHigh)} – ${pct(result.clientHigh/result.totalLow)}`
+    ? `${pct(result.designLow/result.totalHigh)} – ${pct(result.designHigh/result.totalLow)}`
     : 'N/A';
   document.getElementById('scopeBox').innerHTML = `<strong>Selected scope</strong>${result.selected.length ? result.selected.join('; ')+';' : 'No rooms selected yet.'}`;
-
-  document.getElementById('eduLow').textContent = money(result.clientLow);
-  document.getElementById('eduP').textContent = money(result.internalP);
-  document.getElementById('eduHigh').textContent = result.customPlus && result.clientHigh > 0 ? `${money(result.clientHigh).replace(' CAD','')}+ CAD` : money(result.clientHigh);
-  document.getElementById('eduAreas').textContent = result.areaCount;
-  document.getElementById('eduPoints').textContent = result.scopePoints.toFixed(2);
-  document.getElementById('eduWidth').textContent = money(Math.max(0,result.clientHigh-result.clientLow));
-  document.getElementById('eduProfile').textContent = result.rangeProfile ? result.rangeProfile.label : 'N/A';
-  renderWeightBreakdown(result);
-  updateQuoteLab(result);
 
   const note = document.getElementById('noteBox');
   note.className = 'flag';
   if (result.areaCount === 0) {
-    note.textContent = 'Select rooms using the plus and minus controls. Your house and condo selections are stored in separate carts while you compare project types.';
+    note.textContent = 'Add the spaces included in the project.';
   } else if (result.custom) {
     note.classList.add('custom');
-    const reasons = result.customReasons.length ? ` Internal triggers: ${result.customReasons.join('; ')}.` : '';
-    note.textContent = `This selection exceeds the standard planning range and requires a custom scope review before a fixed fee is confirmed.${reasons}`;
+    const propertyLabel = result.propertyType === 'condo' ? 'condo' : 'house';
+    note.textContent = `This selection exceeds the standard planning range for a ${propertyLabel} project. The calculator provides a preliminary estimate, but a custom scope review is required before confirming a fixed fee.`;
   } else if (result.budgetAdjusted) {
-    note.textContent = 'The suggested total project investment has been adjusted to keep the upper planning-range design fee within 20% of the overall project budget. This is an internal planning guardrail, not a claim that every project should reach 20%.';
+    note.textContent = 'The suggested total project investment has been adjusted to keep the design fee within 20% of the overall project budget, consistent with this calculator’s planning guardrail.';
   } else if (state.service === 'direction') {
-    note.textContent = 'Design Direction remains a published flat-fee service based on actual area count. The technical weighting and widened planning-range logic are reserved for Signature Design.';
+    note.textContent = 'Design Direction uses flat pricing based on the number of selected areas. Technical-space weighting does not apply to this service.';
   } else {
-    note.textContent = 'The public range deliberately contains more flexibility than P. P remains the internal standard anchor; the final fixed quote should be positioned within the range after reviewing drawings, site conditions, required deliverables and anticipated revisions.';
+    note.textContent = 'Signature Design reflects the mix of spaces selected. Technical rooms require more design development, while repeated room types receive only a modest efficiency adjustment.';
   }
 }
 
@@ -721,6 +492,14 @@ function selectService(service) {
 function selectProperty(propertyType) {
   if (!state.carts[propertyType]) return;
   state.propertyType = propertyType;
+  updateSummary();
+}
+
+function selectProjectType(projectType) {
+  if (state.propertyType === 'condo' && projectType === 'basement') return;
+  state.projectType = projectType;
+  if (projectType === 'basement') activeCart().scope = 'basement';
+  if (['kitchen','fullbath','powder','whole'].includes(projectType)) activeCart().scope = 'main';
   updateSummary();
 }
 
@@ -743,6 +522,7 @@ function clearActiveCart() {
 function resetAll() {
   state.service = 'signature';
   state.propertyType = 'house';
+  state.projectType = 'kitchen';
   state.carts.house = makeCart('main');
   state.carts.condo = makeCart('main');
   selectService('signature');
@@ -757,6 +537,11 @@ function attachEvents() {
   document.getElementById('propertyTypeGroup').addEventListener('click',event => {
     const button = event.target.closest('[data-property]');
     if (button) selectProperty(button.dataset.property);
+  });
+
+  document.getElementById('projectTypeGroup').addEventListener('click',event => {
+    const button = event.target.closest('[data-project-type]');
+    if (button && !button.disabled) selectProjectType(button.dataset.projectType);
   });
 
   document.getElementById('projectScopeGroup').addEventListener('click',event => {
@@ -778,24 +563,8 @@ function attachEvents() {
     setQuantity(input.dataset.id,input.value);
   });
 
-  document.getElementById('clearCartBtn').addEventListener('click',() => {
-    const label = state.propertyType === 'house' ? 'house' : 'condo';
-    if (window.confirm(`Clear the current ${label} project cart? Your other property-type cart will be preserved.`)) clearActiveCart();
-  });
-
   document.getElementById('resetBtn').addEventListener('click',() => {
     if (window.confirm('Reset everything? This will clear both property-type carts and restore the default house project.')) resetAll();
-  });
-
-  document.getElementById('proposedQuote').addEventListener('input',event => {
-    event.target.dataset.edited = 'true';
-    updateQuoteLab(calculate());
-  });
-
-  document.getElementById('usePBtn').addEventListener('click',() => {
-    const input = document.getElementById('proposedQuote');
-    delete input.dataset.edited;
-    updateQuoteLab(calculate(),true);
   });
 }
 
@@ -805,8 +574,7 @@ attachEvents();
 updateSummary();
 
 window.OSCalculator = {
-  state,calculate,selectService,selectProperty,selectScope,setQuantity,clearActiveCart,resetAll,
-  signatureFeeRaw,buildClientPlanningRange,getClientRangeProfile,
+  state,calculate,selectService,selectProperty,selectProjectType,selectScope,setQuantity,clearActiveCart,resetAll,
   getActiveCart:() => JSON.parse(JSON.stringify(activeCart()))
 };
 </script>
