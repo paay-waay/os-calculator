@@ -203,7 +203,6 @@ const pricing = {
   signature: {1:1800,2:3000,3:4100,4:5000,5:5800,6:6500},
   technicalPremium: {kitchen:400,fullBathroom:200},
   signatureBuffer: {1:200,2:200,3:300,4:300,5:400,6:400},
-  investmentEnvelope: {condo:{low:.9,high:1},house:{low:.95,high:1.1}},
   designShareWarningThreshold: .20
 };
 
@@ -273,7 +272,6 @@ function calculate() {
   const cart = activeCart();
   const projectScope = cart.scope;
   const includedRooms = getIncludedRooms(propertyType,projectScope);
-  const env = pricing.investmentEnvelope[propertyType];
   let areaCount = 0;
   let implementationLow = 0;
   let implementationHigh = 0;
@@ -291,8 +289,8 @@ function calculate() {
     } else {
       const lowKey = propertyType === 'condo' ? 'condoLow' : 'houseLow';
       const highKey = propertyType === 'condo' ? 'condoHigh' : 'houseHigh';
-      implementationLow += qty * room[lowKey] * env.low;
-      implementationHigh += qty * room[highKey] * env.high;
+      implementationLow += qty * room[lowKey];
+      implementationHigh += qty * room[highKey];
     }
     if (room.id === 'kitchen') kitchenCount += qty;
     if (room.id === 'fullbath' || room.id === 'b_fullbath') fullBathroomCount += qty;
@@ -316,15 +314,19 @@ function calculate() {
 
   const totalLow = custom ? null : implementationLow + designLow;
   const totalHigh = custom ? null : implementationHigh + designHigh;
-  const designShareLow = totalHigh > 0 ? designLow / totalHigh : null;
-  const designShareHigh = totalLow > 0 ? designHigh / totalLow : null;
-  const shareOutsideTypicalRange = designShareHigh !== null
-    && designShareHigh > pricing.designShareWarningThreshold;
+  const designShareMin = implementationHigh + designLow > 0
+    ? designLow / (implementationHigh + designLow)
+    : null;
+  const designShareMax = implementationLow + designHigh > 0
+    ? designHigh / (implementationLow + designHigh)
+    : null;
+  const shareOutsideTypicalRange = designShareMax !== null
+    && designShareMax > pricing.designShareWarningThreshold;
 
   return {
     propertyType,projectScope,areaCount,kitchenCount,fullBathroomCount,
     implementationLow,implementationHigh,designLow,designHigh,totalLow,totalHigh,
-    designShareLow,designShareHigh,shareOutsideTypicalRange,selected,custom
+    designShareMin,designShareMax,shareOutsideTypicalRange,selected,custom
   };
 }
 
@@ -391,8 +393,8 @@ function updateSummary() {
     : result.areaCount > 0
       ? (result.totalLow === result.totalHigh ? money(result.totalLow) : `${money(result.totalLow).replace(' CAD','')} – ${money(result.totalHigh)}`)
       : '$0 CAD';
-  document.getElementById('feeShare').textContent = !result.custom && result.designShareLow !== null && result.designShareHigh !== null
-    ? `${pct(result.designShareLow)} – ${pct(result.designShareHigh)}`
+  document.getElementById('feeShare').textContent = !result.custom && result.designShareMin !== null && result.designShareMax !== null
+    ? `${pct(result.designShareMin)} – ${pct(result.designShareMax)}`
     : 'N/A';
   document.getElementById('scopeBox').innerHTML = `<strong>Selected scope</strong>${result.selected.length ? result.selected.join('; ')+';' : 'No rooms selected yet.'}`;
 
