@@ -81,15 +81,16 @@
     .estimate-hero{background:var(--brand);color:white;padding:24px}
     .estimate-hero .small{opacity:.8;font-size:13px;margin-bottom:6px}
     .fee{font-size:clamp(30px,4vw,42px);line-height:1.05;font-weight:950;letter-spacing:-.04em}
-    .fee.custom-review{font-size:clamp(20px,2.6vw,28px);line-height:1.15;letter-spacing:-.02em}
     .summary-body{padding:20px 22px 22px}
     .metric{display:flex;justify-content:space-between;gap:18px;padding:12px 0;border-bottom:1px solid var(--line);font-size:14px}
     .metric .key{color:var(--muted)}
     .metric .value{font-weight:900;text-align:right}
+    .timeline-value{line-height:1.35;min-width:0}
+    .timeline-prefix{color:var(--muted);font-weight:650}
+    .timeline-duration{color:var(--brand);font-weight:950}
     .scope{margin-top:16px;padding:14px;background:var(--accent);border-radius:14px;color:#244437;font-size:13px;line-height:1.5}
     .scope strong{display:block;margin-bottom:6px;color:#173428}
     .flag{margin-top:12px;padding:12px 14px;border-radius:14px;background:var(--warning);color:#694b12;font-size:13px;line-height:1.45}
-    .flag.custom{background:var(--danger);color:#7a2323}
     .footer-note{color:var(--muted);font-size:12px;line-height:1.45;margin-top:16px}
     .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
     .btn{appearance:none;border:0;border-radius:999px;padding:11px 16px;font-weight:900;cursor:pointer}
@@ -156,11 +157,11 @@
           <div class="scope-heading">Project templates</div>
           <div class="template-grid">
             <div class="template-card" id="basementTemplateCard">
-              <div><div class="template-name">Full Basement</div><div class="template-note">Adds a typical basement scope</div></div>
+              <div><div class="template-name">Full Basement</div><div class="template-note">Typical family-use basement scope — adjust spaces as needed.</div></div>
               <button class="template-add" type="button" data-template="basement" aria-label="Add Full Basement template">Add</button>
             </div>
             <div class="template-card" id="wholeTemplateCard">
-              <div><div class="template-name">Whole Home</div><div class="template-note">Adds a typical whole-home scope</div></div>
+              <div><div class="template-name">Whole Home</div><div class="template-note" id="wholeTemplateNote">Typical 3-bedroom house scope — adjust spaces as needed.</div></div>
               <button class="template-add" type="button" data-template="whole" aria-label="Add Whole Home template">Add</button>
             </div>
           </div>
@@ -183,7 +184,8 @@
       <div class="summary-body">
         <div class="metric"><div class="key">Selected service</div><div class="value" id="serviceLabel">Signature Design</div></div>
         <div class="metric"><div class="key">Areas selected</div><div class="value" id="areasSelected">0</div></div>
-        <div class="metric"><div class="key">Recommended project investment range</div><div class="value" id="renoBudget">$0 CAD</div></div>
+        <div class="metric"><div class="key">Estimated design timeline</div><div class="value timeline-value" id="designTimeline">N/A</div></div>
+        <div class="metric"><div class="key">Estimated project investment range</div><div class="value" id="renoBudget">$0 CAD</div></div>
         <div class="metric"><div class="key">Design fee as share of total project budget</div><div class="value" id="feeShare">N/A</div></div>
         <div class="scope" id="scopeBox"><strong>Selected scope</strong>No rooms selected yet.</div>
         <div class="flag" id="noteBox">Add the spaces included in the project.</div>
@@ -191,7 +193,7 @@
           <button class="btn primary" type="button" onclick="window.print()">Save / Print</button>
           <button class="btn secondary" type="button" id="resetBtn">Start over</button>
         </div>
-        <p class="footer-note">This tool provides a preliminary planning estimate, not a quotation. Total project investment includes the displayed design fee and a planning allowance for implementation. Final fees and costs depend on confirmed scope, site conditions and selections.</p>
+        <p class="footer-note">This preliminary planning range is based on the selected interior scope and is not a construction quotation. Structural work, major mechanical or electrical upgrades, permits, site conditions and final selections may materially affect implementation costs. Final design fees depend on confirmed scope and deliverables. Estimated design timelines begin once the project is formally underway and required project information and site documentation have been received. Timelines cover the O/S design phase only, assuming timely client feedback, and exclude client decision delays, permits, third-party coordination, procurement and construction.</p>
       </div>
     </aside>
   </main>
@@ -202,7 +204,8 @@ const pricing = {
   direction: {1:700,2:900,3:1100,4:1200,5:1300,6:1400},
   signature: {1:1800,2:3000,3:4100,4:5000,5:5800,6:6500},
   technicalPremium: {kitchen:400,fullBathroom:200},
-  signatureBuffer: {1:200,2:200,3:300,4:300,5:400,6:400},
+  signatureSpread: {1:400,2:600,3:1000,4:1000,5:1500,6:1500,7:2000,8:2000,9:2500,10:2500,11:3000,12:3000},
+  directionSpread: {1:200,2:300,3:300,4:400,5:400,6:500,7:500,8:600,9:600,10:700,11:700,12:800},
   designShareWarningThreshold: .20
 };
 
@@ -243,10 +246,117 @@ const state = {
 };
 
 function activeCart() { return state.carts[state.propertyType]; }
-function allRooms() { return [...mainRooms,...basementRooms]; }
 function money(v) { return !isFinite(v)||v<=0?'$0 CAD':'$'+Math.round(v).toLocaleString('en-CA')+' CAD'; }
 function pct(v) { return isFinite(v)?(v*100).toFixed(1)+'%':'N/A'; }
 function normalizeQty(value) { return Math.min(20,Math.max(0,Math.floor(Number(value)||0))); }
+
+function roundDown(value,unit) { return Math.floor(value/unit)*unit; }
+function roundUp(value,unit) { return Math.ceil(value/unit)*unit; }
+
+function directionReferenceFee(areaCount) {
+  if (areaCount <= 0) return 0;
+  if (areaCount <= 6) return pricing.direction[areaCount];
+  return pricing.direction[6] + (areaCount-6)*150;
+}
+
+function signatureBaseFee(areaCount) {
+  if (areaCount <= 0) return 0;
+  if (areaCount <= 6) return pricing.signature[areaCount];
+  return pricing.signature[6] + (areaCount-6)*500;
+}
+
+function getDirectionTimeline(areaCount) {
+  if (areaCount <= 0) return 0;
+  if (areaCount <= 2) return 2;
+  if (areaCount <= 4) return 3;
+  if (areaCount <= 8) return 4;
+  if (areaCount <= 10) return 5;
+  if (areaCount <= 12) return 6;
+  return 6 + Math.ceil((areaCount-12)/3);
+}
+
+function getSignatureBaseTimeline(areaCount) {
+  if (areaCount <= 0) return 0;
+  if (areaCount <= 6) return {1:4,2:5,3:6,4:6,5:7,6:8}[areaCount];
+  if (areaCount <= 8) return 9;
+  if (areaCount <= 10) return 10;
+  if (areaCount <= 12) return 12;
+  return 12 + Math.ceil((areaCount-12)/2);
+}
+
+function getTechnicalTimelineAdjustment({areaCount,kitchenCount,fullBathroomCount}) {
+  if (areaCount <= 0) return 0;
+  const adjustment = kitchenCount + fullBathroomCount*.5;
+  return Math.min(adjustment,areaCount <= 12 ? 2 : 3);
+}
+
+function getEstimatedDesignTimeline({service,areaCount,kitchenCount,fullBathroomCount}) {
+  if (areaCount <= 0) return 0;
+  if (service === 'direction') return getDirectionTimeline(areaCount);
+  const base = getSignatureBaseTimeline(areaCount);
+  const technical = getTechnicalTimelineAdjustment({areaCount,kitchenCount,fullBathroomCount});
+  return Math.ceil(base+technical);
+}
+
+function formatTimeline(weeks) {
+  if (!weeks || weeks <= 0) return 'N/A';
+  return `Approximately ${weeks} ${weeks === 1 ? 'week' : 'weeks'}`;
+}
+
+function signatureEstimateSpread(areaCount) {
+  if (areaCount <= 12) return pricing.signatureSpread[areaCount] || 0;
+  return 3000 + Math.ceil((areaCount-12)/2)*500;
+}
+
+function directionEstimateSpread(areaCount) {
+  if (areaCount <= 12) return pricing.directionSpread[areaCount] || 0;
+  return 800 + Math.ceil((areaCount-12)/2)*200;
+}
+
+function clientDesignEstimate(service,areaCount,internalReferenceFee) {
+  if (areaCount <= 0) return {low:0,high:0};
+
+  if (service === 'signature') {
+    const spread = signatureEstimateSpread(areaCount);
+    if (areaCount === 1) {
+      return {low:roundDown(internalReferenceFee,100),high:roundUp(internalReferenceFee+spread,100)};
+    }
+    if (areaCount === 2) {
+      return {low:roundDown(internalReferenceFee-100,100),high:roundUp(internalReferenceFee+500,100)};
+    }
+    const low = roundDown(internalReferenceFee,500);
+    return {low,high:low+spread};
+  }
+
+  const spread = directionEstimateSpread(areaCount);
+  if (areaCount <= 2) {
+    const low = areaCount === 1 ? internalReferenceFee : internalReferenceFee-100;
+    return {low:roundDown(low,100),high:roundUp(low+spread,100)};
+  }
+  const rawLow = internalReferenceFee-spread*.25;
+  const rawHigh = internalReferenceFee+spread*.75;
+  if (areaCount >= 7) {
+    const low = roundDown(internalReferenceFee,500);
+    const roundedSpread = Math.max(500,Math.round(spread/500)*500);
+    return {low,high:low+roundedSpread};
+  }
+  return {low:roundDown(rawLow,100),high:roundUp(rawHigh,100)};
+}
+
+function investmentRoundingUnit(value) {
+  if (value < 25000) return 1000;
+  if (value < 100000) return 5000;
+  if (value < 250000) return 10000;
+  return 25000;
+}
+
+function clientProjectInvestmentRange(rawLow,rawHigh) {
+  if (rawLow <= 0 && rawHigh <= 0) return {low:0,high:0};
+  return {
+    low:roundDown(rawLow,investmentRoundingUnit(rawLow)),
+    high:roundUp(rawHigh,investmentRoundingUnit(rawHigh))
+  };
+}
 
 function getIncludedRooms(propertyType=state.propertyType, scope=activeCart().scope) {
   const included = [];
@@ -297,36 +407,40 @@ function calculate() {
     selected.push(`${qty} ${room.label}`);
   });
 
-  const custom = areaCount >= 7;
-  let designLow = 0;
-  let designHigh = 0;
+  const scopeLevel = areaCount >= 13 ? 'custom' : areaCount >= 7 ? 'large' : 'standard';
+  const technicalPremium = state.service === 'signature'
+    ? kitchenCount * pricing.technicalPremium.kitchen
+      + fullBathroomCount * pricing.technicalPremium.fullBathroom
+    : 0;
+  const internalReferenceFee = state.service === 'signature'
+    ? signatureBaseFee(areaCount) + technicalPremium
+    : directionReferenceFee(areaCount);
+  const designEstimate = clientDesignEstimate(state.service,areaCount,internalReferenceFee);
+  const designEstimateLow = designEstimate.low;
+  const designEstimateHigh = designEstimate.high;
+  const estimatedTimelineWeeks = getEstimatedDesignTimeline({
+    service:state.service,areaCount,kitchenCount,fullBathroomCount
+  });
 
-  if (!custom && state.service === 'direction' && areaCount > 0) {
-    designLow = pricing.direction[areaCount];
-    designHigh = designLow;
-  } else if (!custom && state.service === 'signature' && areaCount > 0) {
-    const signatureBase = pricing.signature[areaCount];
-    const technicalPremium = kitchenCount * pricing.technicalPremium.kitchen
-      + fullBathroomCount * pricing.technicalPremium.fullBathroom;
-    designLow = signatureBase + technicalPremium;
-    designHigh = designLow + pricing.signatureBuffer[areaCount];
-  }
-
-  const totalLow = custom ? null : implementationLow + designLow;
-  const totalHigh = custom ? null : implementationHigh + designHigh;
-  const designShareMin = implementationHigh + designLow > 0
-    ? designLow / (implementationHigh + designLow)
+  const totalLow = implementationLow + designEstimateLow;
+  const totalHigh = implementationHigh + designEstimateHigh;
+  const displayedTotal = clientProjectInvestmentRange(totalLow,totalHigh);
+  const designShareMin = implementationHigh + designEstimateLow > 0
+    ? designEstimateLow / (implementationHigh + designEstimateLow)
     : null;
-  const designShareMax = implementationLow + designHigh > 0
-    ? designHigh / (implementationLow + designHigh)
+  const designShareMax = implementationLow + designEstimateHigh > 0
+    ? designEstimateHigh / (implementationLow + designEstimateHigh)
     : null;
-  const shareOutsideTypicalRange = designShareMax !== null
+  const shareOutsideTypicalRange = areaCount >= 3
+    && designShareMax !== null
     && designShareMax > pricing.designShareWarningThreshold;
 
   return {
     propertyType,projectScope,areaCount,kitchenCount,fullBathroomCount,
-    implementationLow,implementationHigh,designLow,designHigh,totalLow,totalHigh,
-    designShareMin,designShareMax,shareOutsideTypicalRange,selected,custom
+    implementationLow,implementationHigh,technicalPremium,internalReferenceFee,
+    designEstimateLow,designEstimateHigh,totalLow,totalHigh,
+    displayedTotalLow:displayedTotal.low,displayedTotalHigh:displayedTotal.high,
+    designShareMin,designShareMax,shareOutsideTypicalRange,estimatedTimelineWeeks,selected,scopeLevel
   };
 }
 
@@ -350,6 +464,9 @@ function syncControls() {
   basementCard.style.display = state.propertyType === 'house' ? 'flex' : 'none';
   basementCard.classList.toggle('active',cart.templates.basement);
   document.getElementById('wholeTemplateCard').classList.toggle('active',cart.templates.whole);
+  document.getElementById('wholeTemplateNote').textContent = state.propertyType === 'condo'
+    ? 'Typical 2-bedroom condo scope — adjust spaces as needed.'
+    : 'Typical 3-bedroom house scope — adjust spaces as needed.';
 
   document.querySelectorAll('[data-template]').forEach(button => {
     const active = Boolean(cart.templates[button.dataset.template]);
@@ -381,36 +498,42 @@ function updateSummary() {
   const result = calculate();
   document.getElementById('serviceLabel').textContent = state.service === 'signature' ? 'Signature Design' : 'Design Direction';
   document.getElementById('areasSelected').textContent = result.areaCount;
+  const timelineElement = document.getElementById('designTimeline');
+  if (result.estimatedTimelineWeeks > 0) {
+    const unit = result.estimatedTimelineWeeks === 1 ? 'week' : 'weeks';
+    timelineElement.innerHTML = `<span class="timeline-prefix">Approximately </span><span class="timeline-duration">${result.estimatedTimelineWeeks} ${unit}</span>`;
+    timelineElement.setAttribute('aria-label',formatTimeline(result.estimatedTimelineWeeks));
+  } else {
+    timelineElement.textContent = 'N/A';
+    timelineElement.setAttribute('aria-label','N/A');
+  }
   const feeElement = document.getElementById('designFee');
-  feeElement.classList.toggle('custom-review',result.custom);
-  feeElement.textContent = result.custom
-    ? 'Custom Project Review Required'
-    : result.areaCount > 0
-      ? (result.designLow === result.designHigh ? money(result.designLow) : `${money(result.designLow).replace(' CAD','')} – ${money(result.designHigh)}`)
-      : '$0 CAD';
-  document.getElementById('renoBudget').textContent = result.custom
-    ? 'Pending custom review'
-    : result.areaCount > 0
-      ? (result.totalLow === result.totalHigh ? money(result.totalLow) : `${money(result.totalLow).replace(' CAD','')} – ${money(result.totalHigh)}`)
-      : '$0 CAD';
-  document.getElementById('feeShare').textContent = !result.custom && result.designShareMin !== null && result.designShareMax !== null
+  feeElement.textContent = result.areaCount > 0
+    ? (result.designEstimateLow === result.designEstimateHigh ? money(result.designEstimateLow) : `${money(result.designEstimateLow).replace(' CAD','')} – ${money(result.designEstimateHigh)}`)
+    : '$0 CAD';
+  document.getElementById('renoBudget').textContent = result.areaCount > 0
+    ? (result.displayedTotalLow === result.displayedTotalHigh ? money(result.displayedTotalLow) : `${money(result.displayedTotalLow).replace(' CAD','')} – ${money(result.displayedTotalHigh)}`)
+    : '$0 CAD';
+  document.getElementById('feeShare').textContent = result.designShareMin !== null && result.designShareMax !== null
     ? `${pct(result.designShareMin)} – ${pct(result.designShareMax)}`
     : 'N/A';
   document.getElementById('scopeBox').innerHTML = `<strong>Selected scope</strong>${result.selected.length ? result.selected.join('; ')+';' : 'No rooms selected yet.'}`;
 
   const note = document.getElementById('noteBox');
   note.className = 'flag';
+  const shareWarning = " Based on the selected scope and preliminary implementation allowance, the design-fee share is outside the calculator's typical planning range. Review the project scope and investment assumptions before relying on this estimate.";
   if (result.areaCount === 0) {
     note.textContent = 'Add the spaces included in the project.';
-  } else if (result.custom) {
-    note.classList.add('custom');
-    note.textContent = 'Standard package pricing ends at 6 areas. A custom project review is required before confirming the design fee and total project investment.';
+  } else if (result.scopeLevel === 'custom') {
+    note.textContent = 'This project exceeds the calculator’s standard whole-home planning range. The estimate remains preliminary and requires a custom scope review before a fixed fee is confirmed.' + (result.shareOutsideTypicalRange ? shareWarning : '');
+  } else if (result.scopeLevel === 'large') {
+    note.textContent = 'This is a larger multi-space project. The estimate remains useful for planning and will be confirmed after scope review.' + (result.shareOutsideTypicalRange ? shareWarning : '');
   } else if (result.shareOutsideTypicalRange) {
-    note.textContent = "Based on the selected scope and preliminary implementation allowance, the design-fee share is outside the calculator's typical planning range. Review the project scope and investment assumptions before relying on this estimate.";
+    note.textContent = shareWarning.trim();
   } else if (state.service === 'direction') {
-    note.textContent = 'Design Direction uses flat pricing based only on the number of selected areas.';
+    note.textContent = 'Design Direction uses an area-count reference with a focused preliminary estimate range.';
   } else {
-    note.textContent = 'Signature Design uses the area-count base fee plus fixed premiums for Kitchens and Full Bathrooms.';
+    note.textContent = 'Signature Design uses the area-count reference plus fixed premiums for Kitchens and Full Bathrooms. The displayed range remains preliminary until scope and deliverables are confirmed.';
   }
 }
 
@@ -447,7 +570,7 @@ function setQuantity(id,value) {
 }
 
 const templateDefaults = {
-  basement:{b_rec:1,b_bedroom:1,b_fullbath:1},
+  basement:{b_rec:1,b_office:1,b_fullbath:1},
   wholeHouse:{kitchen:1,living:1,dining:1,family:1,bedroom:3,fullbath:2,powder:1,entry:1,laundry:1},
   wholeCondo:{kitchen:1,living:1,dining:1,bedroom:2,office:1,fullbath:2,powder:1}
 };
